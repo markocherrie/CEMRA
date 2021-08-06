@@ -1,0 +1,24 @@
+{
+    "id": "1370E9B4",
+    "path": "~/GitHub/CEMRA/R/app_ui.R",
+    "project_path": "R/app_ui.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1628256901143.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "cursorPosition": "72,0",
+        "scrollLine": "45"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1628257737,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1628257737222,
+    "read_only": false,
+    "read_only_alternatives": []
+}

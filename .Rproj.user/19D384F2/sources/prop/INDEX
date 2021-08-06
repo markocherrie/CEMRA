@@ -1,4 +1,8 @@
 ~%2FGitHub%2FCEMRA%2FDESCRIPTION="DCCB4D92"
+~%2FGitHub%2FCEMRA%2FNAMESPACE="1870EA75"
+~%2FGitHub%2FCEMRA%2FR%2FCOVIDinfectioncalculator.R="D2BC445B"
+~%2FGitHub%2FCEMRA%2FR%2FCOVIDinfectioncalculatorBATCHnumberinfected.R="710CCF1B"
+~%2FGitHub%2FCEMRA%2FR%2FCOVIDinfectioncalculatorBATCHrelativecontributions.R="A5A706E1"
 ~%2FGitHub%2FCEMRA%2FR%2Fapp_server.R="1C93FABC"
 ~%2FGitHub%2FCEMRA%2FR%2Fapp_ui.R="46605035"
 ~%2FGitHub%2FCEMRA%2FR%2Frun_app.R="A668CDE0"

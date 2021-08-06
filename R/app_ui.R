@@ -28,7 +28,8 @@ app_ui <- function(request) {
                       list("None"="None",
                            "Hospital" = "Hospital",
                            "Office" = "Office",
-                           "Restaurant"="Restaurant"
+                           "Restaurant"="Restaurant",
+                           "Small Retailer"="Small Retailer"
                       )),
           selectInput("INFECTED", "Infected status:",
                       list("Extremely high" = "EHI",

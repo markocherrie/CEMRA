@@ -1,4 +1,4 @@
-# CEMRA
+# CEMRA (COVID-19 Exposure Model and Risk App)
  
 CEMRA originated from the following Quantitative Microbial Risk Assessment model by Jones, 2020 - https://www.tandfonline.com/doi/full/10.1080/15459624.2020.1784427
 

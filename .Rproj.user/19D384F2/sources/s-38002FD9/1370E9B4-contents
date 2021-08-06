@@ -39,7 +39,7 @@ app_ui <- function(request) {
                            "Low"="LI",
                            "Very low" = "VLI",
                            "Extremely low"="ELI"
-                      )),
+                      ), selected="MI"),
           selectInput("INTCOMPARISON", "Control Comparison:",
                       list("No interventions" = "NoInt",
                            "Susceptible wearing surgical mask"="SurgicalMask"

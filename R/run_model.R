@@ -1,0 +1,17 @@
+run_model<-function(ID, B){
+  
+    modeldata<-read.csv(paste0("data/runs/",ID,".csv"))
+    
+    starttime<-Sys.time()
+    # Specify how many iterations
+    RUN<-do.call("rbind", replicate(B, modeldata, simplify = FALSE))
+    
+    # Run the function
+    output<-plyr::mdply(RUN, COVIDinfectioncalculator)
+    endtime<-Sys.time()
+    totaltime<-starttime-endtime
+    totaltime
+    
+    write.csv(output, paste0("data/output/", ID ,".csv"), row.names = F)
+    
+}

@@ -74,8 +74,8 @@ modeldata <- eventReactive(input$Run, {
 paramdata <- reactive({
   df <- modeldata()
   df2 <- tidyr::gather(df, key="Parameter")
-  auxdata<-read.csv("auxdata.csv")
-  df2<-merge(df2, auxdata, by="Parameter", all=T)
+  metadata<-data(metadata)
+  df2<-merge(df2, metadata, by="Parameter", all=T)
   df2 <- with(df2,df2[order(ID) , ])
   df2 <- subset(df2, select = -c(ID) )
 })

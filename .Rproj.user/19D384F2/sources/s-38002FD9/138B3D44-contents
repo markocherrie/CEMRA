@@ -7,13 +7,14 @@
 app_server <- function( input, output, session ) {
   # Your application server logic 
 
- source("R/COVIDinfectioncalculator.R")
- source("R/COVIDinfectioncalculatorBATCHnumberinfected.R")
- source("R/COVIDinfectioncalculatorBATCHrelativecontributions.R")
+ #source("R/COVIDinfectioncalculator.R")
+ #source("R/COVIDinfectioncalculatorBATCHnumberinfected.R")
+ #source("R/COVIDinfectioncalculatorBATCHrelativecontributions.R")
+
+devtools::load_all("R/")
   
-  
-  #This function is responsible for loading in the selected file
-  filedata <- reactive({
+# This function is responsible for loading in the selected file
+filedata <- reactive({
     infile <- input$file1
     if (is.null(infile)) {
       # User has not uploaded a file yet
@@ -22,10 +23,9 @@ app_server <- function( input, output, session ) {
     read.csv(infile$datapath)
   })
   
-  modeldata <- eventReactive(input$Run, {
-    
-    
-    ##### BUILD THE STRING TO LOAD THE RIGHT FILE    
+  
+# Control data changes based on input
+modeldata <- eventReactive(input$Run, {
     df<- if(input$ENGVAR=="UVC"){
       df <- filedata()
       ACHadd<-850/((df$Roomvolumemin+df$Roomvolumemax)/2)
@@ -70,23 +70,22 @@ app_server <- function( input, output, session ) {
     
   })
   
-  paramdata <- reactive({
-    df <- modeldata()
-    df2 <- tidyr::gather(df, key="Parameter")
-    auxdata<-read.csv("auxdata.csv")
-    df2<-merge(df2, auxdata, by="Parameter", all=T)
-    df2 <- with(df2,df2[order(ID) , ])
-    df2 <- subset(df2, select = -c(ID) )
-  })
-  
-  # output params data
-  output$params <- renderTable({
+# output params data
+paramdata <- reactive({
+  df <- modeldata()
+  df2 <- tidyr::gather(df, key="Parameter")
+  auxdata<-read.csv("auxdata.csv")
+  df2<-merge(df2, auxdata, by="Parameter", all=T)
+  df2 <- with(df2,df2[order(ID) , ])
+  df2 <- subset(df2, select = -c(ID) )
+})
+output$params <- renderTable({
     req(input$file1)
     paramdata()
   })
   
-  # Generate a summary of the data
-  output$summary <- renderPlot({
+# Generate a summary of the data
+output$summary <- renderPlot({
     if (is.null(input$file1)){return("")}                                  
     
     modeldata <-modeldata()
@@ -150,8 +149,9 @@ app_server <- function( input, output, session ) {
         theme(plot.title = element_text(size = 15, face = "bold"))
     }
   })
-  
-  output$relcon <- renderPlot({
+
+# Generate relcon plot
+output$relcon <- renderPlot({
     if (is.null(input$file1)){return("")} 
     modeldata <-modeldata()
     modeldataoutput<- COVIDinfectioncalculatorBATCHrelativecontributions(modeldata, input$nusimu)

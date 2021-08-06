@@ -16,7 +16,7 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
                                     SuCinhaleprobmax, SuCinhaleprobmode,SuChandtouchmin, SuChandtouchmax, SuChandtouchmode,#5 
                                     SuCfomiteprobmin, SuCfomiteprobmax, SuCfomiteprobmode,SuSPRAYprob, Su){ #4
   
-  
+ 
   #############################################################################################################################################
   # STAGE 1: SET UP THE VARIABLES
   #############################################################################################################################################
@@ -26,7 +26,7 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   # room volume, m^3
   V<-runif(1, min=Roomvolumemin, max=Roomvolumemax)
   W<-sqrt(V/Roomheight)
-  
+
   # 1m is the distance; 3.7*2.4*3
   Vn<-RoomNFw*RoomNFh*RoomNFd
   NFsizeperc=Vn/V
@@ -39,9 +39,9 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   
   # if windows open; recalculate the ACH rule of thumb equation from p40 here: https://www.who.int/water_sanitation_health/publications/natural_ventilation.pdf
   if(Roomwindowsopen=="Y"){
-    ACH<-(0.65*(runif(1, Roomwindspeedmin, Roomwindspeedmax)*(RoomsoaW*RoomsoaH*RoomsoaP)*3600))/V
+  ACH<-(0.65*(runif(1, Roomwindspeedmin, Roomwindspeedmax)*(RoomsoaW*RoomsoaH*RoomsoaP)*3600))/V
   } else{
-    ACH<-ACH
+  ACH<-ACH
   }
   
   # if UVC unit it the room
@@ -65,7 +65,7 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   Tmax<-rtriangle(1, a=SuTmaxa, b=SuTmaxb, c=SuTmaxc)
   
   ################### EMISSION VARIABLES ########################
-  
+
   #######
   Infcoughrateperhour<-rtriangle(1, a=Infcoughrateperhourmin, b=Infcoughrateperhourmax, c=Infcoughrateperhourmode)
   
@@ -80,9 +80,9 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   # unit is log10 infectious copies per mL
   # take to the power 10 to make units infectious virus per mL
   if(Infsalivastudy=="Chen"){
-    CONCsaliva<-(10^rweibull(1, shape=InfsalivaChenshape, scale=InfsalivaChenscale))
+  CONCsaliva<-(10^rweibull(1, shape=InfsalivaChenshape, scale=InfsalivaChenscale))
   } else if(Infsalivastudy=="Iwasaki"){
-    CONCsaliva<-(10^runif(1, min=InfsalivaIwasakimin, max=InfsalivaIwasakimax))
+  CONCsaliva<-(10^runif(1, min=InfsalivaIwasakimin, max=InfsalivaIwasakimax))
   }
   # the number of coughs during the exposure event
   Ncough<-round(Tmax*COUGHrate)
@@ -129,7 +129,7 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   EairTalkS<-InfEairTalkSQA*rltriangle(n=1, a=InfCexhaleprobmin, b=InfCexhaleprobmax, c=InfCexhaleprobmode)
   #Emission per minute from breathing/talking
   EairTalk<-EairTalkS
-  
+
   ################### INACTIVATION VARIABLES #################
   
   # INACTIVair is the inactivation rate SARS-2 (Van Doremanlen, 2020) 
@@ -213,21 +213,21 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   ChaoCough[,5]<-((4/3)*pi*(ChaoCough[,2]/2)^3+(4/3)*pi*(ChaoCough[,1]/2)^3)/2
   ChaoCough[1:15,6]<-ChaoCough[1:15,4]/ChaoCough[1:15,3]
   if(ExtraExpVolStudy=="Duguid"){
-    ChaoCough[,7]<-c(76, 1041, 386, 127, 47, 45, 38, 38, 27,32,30,83,47,40,27,0)
+  ChaoCough[,7]<-c(76, 1041, 386, 127, 47, 45, 38, 38, 27,32,30,83,47,40,27,0)
   } else if (ExtraExpVolStudy=="LoudenandRoberts"){
-    ChaoCough[,7]<-c(39, 542,  201, 66,  25, 24, 20, 20, 14, 17,16,43,25,21,14,0)
+  ChaoCough[,7]<-c(39, 542,  201, 66,  25, 24, 20, 20, 14, 17,16,43,25,21,14,0)
   } else if(ExtraExpVolStudy=="Zhu"){
-    ChaoCough[,7]<-c(67,924,   343, 113, 42, 40, 34, 34, 24, 29,27,74,42,35,24,0)
+  ChaoCough[,7]<-c(67,924,   343, 113, 42, 40, 34, 34, 24, 29,27,74,42,35,24,0)
   }
   
   #distribution of virus concentration across the 16 size bins   
   # 1 = same concentration in all bins, equal to concentration in the saliva
   if(distsalivavirusconc=="equal"){
-    Dist.saliva<-rep(1,16)
+  Dist.saliva<-rep(1,16)
   } else if(distsalivavirusconc=="lowernonresp"){
-    Dist.saliva<-c(rep(1,3), rep(0.5,13))
+  Dist.saliva<-c(rep(1,3), rep(0.5,13))
   }
-  
+
   #############################################################################################################################################
   # STAGE 2: SET UP THE CONTROLS
   #############################################################################################################################################
@@ -406,7 +406,7 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   #############################################################################################################################################
   # STAGE 4: DEFINE VIRUS EMISSION CHARACTERISTICS 
   #############################################################################################################################################
-  
+
   # Pathogens in COUGH particles
   if(Ncough!=0){
     # number of pathogens in particle bin
@@ -437,7 +437,7 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   }
   
   # Pathogens in BREATHING/TALKING particles
-  
+
   #continuous emission into air and surfaces in near field (PFU per min)
   rateEair<-(EairCough+EairTalk)/gf
   rateEsurface<-(EsurfCough)/gf
@@ -449,7 +449,7 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   #############################################################################################################################################
   # STAGE 5: INITIAL COMPARTMENT CONDITIONS - equated with steady state
   #############################################################################################################################################
-  
+
   # emission is into the air in the NF and onto surfaces in the NF
   Nair<-(rateEair)/(lambda12+lambda17+lambda18+lambda19)  
   Nsurface<-rateEsurface/(lambda27)
@@ -522,27 +522,27 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   # total dose to the lung is from emission at each time step into near-field air, and surfaces
   # plus dose resulting from initial conditions in each of these three zones
   doseLUNGi<-sum(trackP[,1]*rateEair*dt)+
-    trackP[nsteps,1]*Nair
+                 trackP[nsteps,1]*Nair
   
   doseLUNGFFi<-sum(trackP[,4]*rateEair*dt)+
-    trackP[nsteps,4]*Nair
+                   trackP[nsteps,4]*Nair
   
   doseFACEi<-sum(trackP[,2]*rateEair*dt)+
-    sum(trackP[,3]*rateEsurface*dt)+
-    trackP[nsteps,2]*Nair+
-    trackP[nsteps,3]*Nsurface	
+             sum(trackP[,3]*rateEsurface*dt)+
+                 trackP[nsteps,2]*Nair+
+                 trackP[nsteps,3]*Nsurface	
   
   # if there is more than 1 infected in the room then add total dose to the lung is from emission at each time step into far-field air, and surfaces
   # plus dose resulting from initial conditions in each of these three zones
   if(Infected>1){
-    doseLUNGi2<-sum(trackFF[,1]*rateEair2*dt)+trackFF[nsteps,1]*Nair2
-    doseLUNGFFi2<-sum(trackFF[,4]*rateEair2*dt)+trackFF[nsteps,4]*Nair2
-    doseFACEi2<-sum(trackFF[,2]*rateEair2*dt)+sum(trackFF[,3]*rateEsurface2*dt)+trackFF[nsteps,2]*Nair2+trackFF[nsteps,3]*Nsurface	
-    
-    # combine the dose recieved in the near field and the far field
-    doseLUNGi<-doseLUNGi+doseLUNGi2
-    doseLUNGFFi<-doseLUNGFFi + doseLUNGFFi2
-    doseFACEi<-doseFACEi + doseFACEi2
+  doseLUNGi2<-sum(trackFF[,1]*rateEair2*dt)+trackFF[nsteps,1]*Nair2
+  doseLUNGFFi2<-sum(trackFF[,4]*rateEair2*dt)+trackFF[nsteps,4]*Nair2
+  doseFACEi2<-sum(trackFF[,2]*rateEair2*dt)+sum(trackFF[,3]*rateEsurface2*dt)+trackFF[nsteps,2]*Nair2+trackFF[nsteps,3]*Nsurface	
+  
+  # combine the dose recieved in the near field and the far field
+  doseLUNGi<-doseLUNGi+doseLUNGi2
+  doseLUNGFFi<-doseLUNGFFi + doseLUNGFFi2
+  doseFACEi<-doseFACEi + doseFACEi2
   }
   
   # apply the effect of respirator
@@ -643,13 +643,14 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   # combine all the outputs and add them to the original dataframe
   result<-cbind(
     V,W,Vn,NFsizeperc, betaNF, ACH, pSPRAY, FFtime, 
-    Tmax, Infcoughrateperhour,Ncough, FFinfected, COUGHrate, 
-    CONCsaliva, gf, Infactivity, InfEairTalkS,EairTalkS,InfEairTalkSQA,  INACTIVair, 
-    INACTIVsurface, INACTIVskin, Aportals, TRANSsurface.skin, TRANSskin,
-    CONTACTsurfaceNF.hand, CONTACTsurfaceFF.hand, CONTACTface.hand, pTARGET,
-    ExtraExpVolStudy, distsalivavirusconc, Feye, Fspray, Finhale, Ffomite, 
-    rateEair, rateEsurface, rateEair2, rateEsurface2,nsteps,  probthin, probinsp,
-    Nsurface, Nsurface2, Nair, Nair2, doseFACE, doseLUNG, doseLUNGFF, doseSPRAY,rFACE, rSPRAY, rLUNGNF, rLUNGFF, rOVERALL, numberinfected)
+                Tmax, Infcoughrateperhour,Ncough, FFinfected, COUGHrate, 
+                CONCsaliva, gf, Infactivity, InfEairTalkS,EairTalkS,InfEairTalkSQA,  INACTIVair, 
+                INACTIVsurface, INACTIVskin, Aportals, TRANSsurface.skin, TRANSskin,
+                CONTACTsurfaceNF.hand, CONTACTsurfaceFF.hand, CONTACTface.hand, pTARGET,
+                ExtraExpVolStudy, distsalivavirusconc, Feye, Fspray, Finhale, Ffomite, 
+                rateEair, rateEsurface, rateEair2, rateEsurface2,nsteps,  probthin, probinsp,
+                Nsurface, Nsurface2, Nair, Nair2, doseFACE, doseLUNG, doseLUNGFF, doseSPRAY,rFACE, rSPRAY, rLUNGNF, rLUNGFF, rOVERALL, numberinfected)
   result<-data.frame(result)
   return(result)
 }
+

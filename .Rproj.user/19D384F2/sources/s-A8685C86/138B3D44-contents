@@ -19,15 +19,13 @@ filedata <- reactive({
       infile<-input$file1
       read.csv(infile$datapath)
     } else if(is.null(input$file1) & input$SETTING=="Hospital"){
-      # put in proper setting file
+      ########################## put in proper setting files ##############################
       infile<-"data/runs/Hospital.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Office"){
-      # put in proper setting file
       infile<-"data/runs/Office.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Restaurant"){
-      # put in proper setting file
       infile<-"data/runs/Restaurant.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Small Retailer"){
@@ -37,12 +35,11 @@ filedata <- reactive({
     }
   })
   
-# Control data changes based on input
+# Generate the input data
 modeldata <- reactive({
     
   # Change the inputted dataset using a number of params 
-  df<-
-      df <- filedata()
+  df <- filedata()
       # INFECTIOUSNESS
       if(input$INFECTED=="EHI"){
         df$Infcoughrateperhourmax<-70
@@ -50,6 +47,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmode<-65
         df$InfsalivaChenscale<-7
         df$InfEairTalkSmean<-7
+        df$ID<-paste0(df$ID, "_EHI")
         df
       } else if(input$INFECTED=="VHI"){
         df$Infcoughrateperhourmax<-60
@@ -57,6 +55,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmode<-55
         df$InfsalivaChenscale<-6
         df$InfEairTalkSmean<-6
+        df$ID<-paste0(df$ID, "_VHI")
         df
       } else if(input$INFECTED=="HI"){
         df$Infcoughrateperhourmax<-50
@@ -64,6 +63,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmode<-45
         df$InfsalivaChenscale<-5
         df$InfEairTalkSmean<-5
+        df$ID<-paste0(df$ID, "_HI")
         df
       }else if(input$INFECTED=="MI"){
         df$Infcoughrateperhourmax<-40
@@ -71,6 +71,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmode<-35
         df$InfsalivaChenscale<-4
         df$InfEairTalkSmean<-4
+        df$ID<-paste0(df$ID, "_MI")
         df
       } else if(input$INFECTED=="LI"){
         df$Infcoughrateperhourmax<-30
@@ -78,6 +79,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmode<-25
         df$InfsalivaChenscale<-3
         df$InfEairTalkSmean<-3
+        df$ID<-paste0(df$ID, "_LI")
         df
       } else if(input$INFECTED=="VLI"){
         df$Infcoughrateperhourmax<-20
@@ -85,6 +87,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmode<-15
         df$InfsalivaChenscale<-2
         df$InfEairTalkSmean<-2
+        df$ID<-paste0(df$ID, "_VLI")
         df
       }else if(input$INFECTED=="ELI"){
         df$Infcoughrateperhourmax<-10
@@ -92,6 +95,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmode<-5
         df$InfsalivaChenscale<-1
         df$InfEairTalkSmean<-1
+        df$ID<-paste0(df$ID, "_ELI")
         df
       }else{
         df
@@ -100,9 +104,10 @@ modeldata <- reactive({
     # ENGINEERING CONTROLS
       if(input$ENGVAR=="UVC"){
       df$RoomUVCpurificationinroom<-"Y"
-      RoomUVCmaxflowrate<-450
-      RoomUVCeffmin<-0.9
-      RoomUVCeffmax<-1
+      df$RoomUVCmaxflowrate<-450
+      df$RoomUVCeffmin<-0.9
+      df$RoomUVCeffmax<-1
+      df$ID<-paste0(df$ID, "_UVC")
       df
     } else if (input$ENGVAR=="Freshair"){
       df$Roomwindowsopen<-"Y"
@@ -111,19 +116,22 @@ modeldata <- reactive({
       df$RoomsoaW<-0.8
       df$RoomsoaH<-1
       df$RoomsoaP<-0.1
+      df$ID<-paste0(df$ID, "_Freshair")
       df
     } else if (input$ENGVAR=="VentHead"){
       df$InfCexhaleprobmin<-0.06
       df$InfCexhaleprobmax<-0.27
       df$InfCexhaleprobmode<-0.17
+      df$ID<-paste0(df$ID, "_VentHead")
       df
     } else{
       df
     }
     
-    # ADMINISTRATIVE CONTROLS
+    ################## ADMINISTRATIVE CONTROLS #################### FILLL THESE IN PROPERLY
     if(input$ADMVAR=="Hygiene"){
       df$SuCfomiteprob <-0.146
+      df$ID<-paste0(df$ID, "_Hygiene")
       df
     } else{
       df
@@ -134,16 +142,19 @@ modeldata <- reactive({
       df$SuCinhaleprobmin<-0.2
       df$SuCinhaleprobmax<-0.65
       df$SuCinhaleprobmode<-0.35
+      df$ID<-paste0(df$ID, "_SurgicalMask")
       df
     } else if(input$PPEVAR=="FFP2"){
       df$SuCinhaleprobmin<-0.01
       df$SuCinhaleprobmax<-0.35
       df$SuCinhaleprobmode<-0.1
+      df$ID<-paste0(df$ID, "_FFP2")
       df  
     } else if(input$PPEVAR=="FFP3"){
       df$SuCinhaleprobmin<-0.005
       df$SuCinhaleprobmax<-0.3
       df$SuCinhaleprobmode<-0.05
+      df$ID<-paste0(df$ID, "_FFP3")
       df  
     } else if(input$PPEVAR=="AirHood"){
       df$SuCinhaleprobmin<-0.0003
@@ -152,14 +163,20 @@ modeldata <- reactive({
       df$SuChandtouchmin<-0	
       df$SuChandtouchmax<-0
       df$SuChandtouchmode<-0
+      df$ID<-paste0(df$ID, "_Airhood")
       df
     } else{
       df
     }
     
   })
+baselinedata <- reactive({
+    df <- filedata()
+    df
+})
+
   
-# output params data
+# Create the params table for output
 paramdata <- reactive({
   df  <- modeldata()
   df2 <- tidyr::gather(df, key="Parameter")
@@ -174,68 +191,27 @@ output$params <- renderTable({
   
 # Generate a summary of the data
 output$summary <- renderPlot({
-    if (is.null(input$file1)){return("")}                                  
+
+    modeldata <- modeldata()
+    baselinedata  <-baselinedata()
     
-    modeldata <-modeldata()
+    # Specify how many iterations
+    RUN<-do.call("rbind", replicate(100, modeldata, simplify = FALSE))
+    RUN2<-do.call("rbind", replicate(100, baselinedata, simplify = FALSE))
+    RUN3<-rbind(RUN, RUN2)
     
-    modeldataoutput<- COVIDinfectioncalculator(modeldata, 10)
-    
-    print(modeldataoutput)
-    
-    numberinfected<-round(as.numeric(modeldataoutput$mean)*100000)
-    numberinfectedLL<-round(as.numeric(modeldataoutput$numberinfectedLL)*100000)
-    numberinfectedUL<-round(as.numeric(modeldataoutput$numberinfectedUL)*100000)
+    # Run the function
+    masteroutput<-plyr::mdply(RUN3, COVIDinfectioncalculator)
+    masteroutput$numberinfected<-as.numeric(masteroutput$numberinfected)
     
     
-    confdiff<-numberinfectedUL-numberinfectedLL
+    masteroutput <- masteroutput %>% select(ID,numberinfected)
+  
+    library(ggplot2)
+    ggplot(masteroutput, aes(x=ID, y=numberinfected))+
+      geom_violin()+theme(axis.text=element_text(size=12),
+                          axis.title=element_text(size=14,face="bold"))
     
-    if(numberinfected>0){
-      infected<-as.data.frame(rep("Infected", numberinfectedLL))
-      colnames(infected)<-"Status"
-      
-      maybeinfected<-as.data.frame(rep("Possibly Infected", confdiff))
-      colnames(maybeinfected)<-"Status"
-      
-      library(ggwaffle)
-      library(emojifont)
-      waffledf<-as.data.frame(rbind(infected, maybeinfected))
-      waffledf$Status <- as.character(waffledf$Status)
-      waffledf$id<-1
-      
-      waffledata<-waffle_iron(waffledf, aes_d(group = Status), rows = 25)
-      
-      colnames(waffledata)<-c("x", "y", "For every 100,000 people exposed")
-      
-      
-      library(emojifont)  
-      library(dplyr)
-      waffledata<-waffledata %>% mutate(label = fontawesome('fa-female'))
-      
-      group.colors <- c(Infected = "#d93f34", `Possibly Infected` = "#eda49f")
-      
-      ggplot(waffledata, aes(x, y, fill = `For every 100,000 people exposed`)) + 
-        geom_waffle() +
-        
-        geom_text(aes(label=label), family='fontawesome-webfont', size=4) +
-        coord_equal() +
-        theme_waffle() +
-        scale_fill_manual(values=group.colors)+
-        xlab("")+
-        ylab("")+
-        ggtitle(" ")+
-        theme(legend.position="bottom")+
-        theme(plot.title = element_text(hjust = 0.5))+
-        theme(plot.title = element_text(size = 15, face = "bold"))
-    }else{
-      ggplot() +
-        theme_waffle() +
-        xlab("")+
-        ylab("")+
-        ggtitle("No one infected")+
-        theme(legend.position="bottom")+
-        theme(legend.title = element_blank()) +
-        theme(plot.title = element_text(size = 15, face = "bold"))
-    }
   })
 
 # Generate relcon plot

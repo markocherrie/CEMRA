@@ -1,25 +1,25 @@
 {
-    "id": "81488B5D",
+    "id": "DE7912BB",
     "path": "~/GitHub/CEMRA/R/COVIDinfectioncalculator.R",
     "project_path": "R/COVIDinfectioncalculator.R",
     "type": "r_source",
     "hash": "0",
     "contents": "",
     "dirty": false,
-    "created": 1628258430824.0,
+    "created": 1628520616202.0,
     "source_on_save": false,
-    "relative_order": 7,
+    "relative_order": 10,
     "properties": {
         "tempName": "Untitled1",
-        "cursorPosition": "642,20",
-        "scrollLine": "609"
+        "cursorPosition": "49,9",
+        "scrollLine": "37"
     },
     "folds": "",
-    "lastKnownWriteTime": 1628262060,
+    "lastKnownWriteTime": 1628525309,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1628262060,
+    "last_content_update": 1628525309519,
     "read_only": false,
     "read_only_alternatives": []
 }

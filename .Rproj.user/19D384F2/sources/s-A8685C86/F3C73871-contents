@@ -1,0 +1,194 @@
+
+w1<-read.csv("output/newrunmay.csv")
+
+w1$ID<-factor(w1$ID, levels=c(
+  "CEMRA_noint",
+  "CEMRA_surgicalmask",
+  "CEMRA_FFP2",
+  "CEMRA_FFP3",
+  "CEMRA_Airhood",
+  "CEMRA_noint_freshair",
+  "CEMRA_surgicalmask_freshair",
+  "CEMRA_surgicalmask_UVC",
+  "CEMRA_surgicalmask_VentHead",
+  "CEMRA_surgicalmask_surfacedis",
+  "CEMRA_surgicalmask_surfacedishandhygiene",
+  "CEMRA_FFP3_treatmentroom",
+  "CEMRA_Airhood_treatmentroom",
+  "CEMRA_noint_multiroom", 
+  "CEMRA_surgicalmask_mutltiroom",
+  "CEMRA_FFP2_multiroom",
+  "CEMRA_FFP3_multiroom",
+  "CEMRA_Airhood_multiroom"))
+
+######################### sensitivity of parameters
+
+library(dplyr)
+c1<- w1 %>% filter(ID=="CEMRA_noint")
+
+FACEparamcorr <- c1 %>% dplyr::select(V, ACH, FFtime, Tmax,
+                                      Infcoughrateperhour, CONCsaliva, gf, InfEairTalkS, 
+                                      INACTIVair, INACTIVsurface, INACTIVskin, 
+                                      TRANSskin,
+                                      CONTACTsurfaceNF.hand, CONTACTsurfaceFF.hand, CONTACTface.hand, 
+                                      pTARGET, rFACE)
+
+mydata.cor = cor(FACEparamcorr)
+library(corrplot)
+corrplot(mydata.cor)
+
+NFINHALparamcorr <- c1 %>% select(V, ACH, FFtime, Tmax,
+                                  Infcoughrateperhour, CONCsaliva, gf, InfEairTalkS, 
+                                  INACTIVair, INACTIVsurface, INACTIVskin, 
+                                  TRANSskin,
+                                  CONTACTsurfaceNF.hand, CONTACTsurfaceFF.hand, CONTACTface.hand, 
+                                  pTARGET,
+                                  rLUNGNF)
+
+mydata.cor = cor(NFINHALparamcorr)
+corrplot(mydata.cor)
+
+
+FFINHALparamcorr <- c1 %>% select(V, ACH, FFtime, Tmax,
+                                  Infcoughrateperhour, CONCsaliva, gf, InfEairTalkS, 
+                                  INACTIVair, INACTIVsurface, INACTIVskin, 
+                                  TRANSskin,
+                                  CONTACTsurfaceNF.hand, CONTACTsurfaceFF.hand, CONTACTface.hand, 
+                                  pTARGET,rLUNGFF)
+
+mydata.cor = cor(FFINHALparamcorr)
+corrplot(mydata.cor)
+
+SPRAYparamcorr <- c1 %>% select(V, ACH, FFtime, Tmax,
+                                Infcoughrateperhour, CONCsaliva, gf, InfEairTalkS, 
+                                INACTIVair, INACTIVsurface, INACTIVskin, 
+                                TRANSskin,
+                                CONTACTsurfaceNF.hand, CONTACTsurfaceFF.hand, CONTACTface.hand, 
+                                pTARGET, rSPRAY)
+
+mydata.cor = cor(SPRAYparamcorr)
+library(corrplot)
+corrplot(mydata.cor)
+
+OVERALLparamcorr <- c1 %>% select(V, ACH, FFtime, Tmax,
+                                  Infcoughrateperhour, CONCsaliva, gf, InfEairTalkS, 
+                                  INACTIVair, INACTIVsurface, INACTIVskin, 
+                                  TRANSskin,
+                                  CONTACTsurfaceNF.hand, CONTACTsurfaceFF.hand, CONTACTface.hand, 
+                                  pTARGET, rOVERALL)
+
+mydata.cor = cor(OVERALLparamcorr)
+library(corrplot)
+corrplot(mydata.cor)
+
+
+######################### virus conc 
+
+library(tidyr)
+library(stringr)
+virusconcentrations<-w1 %>% group_by(ID) %>% summarise(NFsurface=Nsurface/Infsurfaces,
+                                                       NFair=Nair/Vn,
+                                                       FFair=Nair2/(V-Vn))%>%
+  select(ID, NFsurface, NFair, FFair)%>%
+  pivot_longer(cols=c(NFsurface, NFair, FFair))
+
+library(ggplot2)
+A<-virusconcentrations %>% filter(str_detect(ID,"[CEMRA][RJ]"))%>%
+  filter(name=="NFair") %>%
+  ggplot(aes(x=ID, y=value))+
+  geom_boxplot()+ 
+  geom_hline(yintercept=0.001, linetype="dashed", 
+             color = "red", size=1)+
+  theme(axis.text.x = element_text(angle = 45, hjust=1),
+        axis.title.x=element_blank())+
+  ylab("gene copies/m3")+
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 20),)
+
+B<-virusconcentrations %>% filter(str_detect(ID,"[CEMRA][RJ]"))%>%
+  filter(name=="NFsurface") %>%
+  ggplot(aes(x=ID, y=value))+
+  geom_boxplot()+ 
+  theme(axis.text.x = element_text(angle = 45, hjust=1),
+        axis.title.x=element_blank())+
+  ylab("gene copies/cm2")+
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 20))
+
+
+C<-virusconcentrations %>% filter(str_detect(ID,"[CEMRA][RJ]"))%>%
+  filter(name=="FFair") %>%
+  ggplot(aes(x=ID, y=value))+
+  geom_boxplot()+
+  theme(axis.text.x = element_text(angle = 45, hjust=1),
+        axis.title.x=element_blank())+
+  ylab("gene copies/m3")+
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10))
+
+
+library(ggpubr)
+figure <- ggarrange(A, B, C,
+                    labels = c("A", "B", "C"),
+                    ncol = 3, nrow = 1)
+
+
+######################### relative contributions
+
+relativecontributions<-w1 %>% 
+  group_by(ID) %>%
+  summarise(CONTACT_mean=      mean(rFACE  /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100), sdcontact=sd(rFACE/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
+            INHALATION_NF_mean=mean(rLUNGNF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100), sdinhalation=sd(rLUNGNF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
+            INHALATION_FF_mean=mean(rLUNGFF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100), sdinhalation=sd(rLUNGFF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
+            SPRAY_mean=        mean(rSPRAY /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100), sdspray=sd(rSPRAY/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100))
+
+relativecontributions
+
+w3long<-w1 %>% 
+  mutate(CONTACT=      rFACE  /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100, 
+         INHALATION_NF=rLUNGNF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100,
+         INHALATION_FF=rLUNGFF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100,
+         SPRAY=        rSPRAY /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100)%>%
+  select(ID ,CONTACT, INHALATION_NF, INHALATION_FF, SPRAY) %>%
+  pivot_longer(cols=c(CONTACT, INHALATION_NF, INHALATION_FF, SPRAY))
+
+library(ggplot2)
+ggplot(w3long, aes(x=ID, y=value))+
+  geom_boxplot()+
+  facet_wrap(~name)+ 
+  theme(axis.text.x = element_text(angle = 45, hjust=1))
+
+################## Number infected
+
+library(dplyr)
+numberinfected<-w1 %>% 
+  group_by(ID) %>%
+  summarise(numberinfectedmean=mean(numberinfected))
+
+numberinfected
+
+relativecontributions<-w1 %>% 
+  filter(str_detect(ID,"[CEMRA][RJ]"))%>%
+  group_by(ID) %>%
+  summarise(numberinfectedmean=mean(numberinfected, na.rm=T))%>%
+  mutate(Risk=gtools::quantcut(numberinfectedmean, q=3))%>%
+  select(ID, Risk)
+
+w3long<-w1 %>% 
+  select(ID, numberinfected) %>%
+  mutate(lognumberinfected=log(numberinfected))%>%
+  pivot_longer(cols=c(lognumberinfected))%>%
+  right_join(relativecontributions, by="ID")
+
+library(ggplot2)
+ggplot(w3long, aes(x=ID, y=value))+
+  geom_boxplot()+
+  theme(axis.text.x = element_text(angle = 45, hjust=1),
+        axis.title.x=element_blank())
+
+
+#########################
+
+
+
+
+
+
+

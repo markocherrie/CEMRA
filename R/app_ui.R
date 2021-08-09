@@ -56,10 +56,6 @@ app_ui <- function(request) {
                            "FFP3" = "FFP3",
                            "Worksafe AirHood"="Airhood"
                       )),
-          #selectInput("INTCOMPARISON", "Control Comparison:",
-          #            list("No interventions" = "NoInt",
-          #                 "Susceptible wearing surgical mask"="SurgicalMask"
-          #            )),
           actionButton("Run", "Run"),
           
           

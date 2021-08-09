@@ -8,10 +8,10 @@ run_model<-function(ID, B){
     
     # Run the function
     output<-plyr::mdply(RUN, COVIDinfectioncalculator)
-    endtime<-Sys.time()
-    totaltime<-starttime-endtime
-    totaltime
     
+    # output to csv
     write.csv(output, paste0("data/output/", ID ,".csv"), row.names = F)
     
+    # get output
+    return(output)
 }

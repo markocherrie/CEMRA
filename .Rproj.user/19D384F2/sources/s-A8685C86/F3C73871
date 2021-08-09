@@ -1,0 +1,24 @@
+{
+    "id": "F3C73871",
+    "path": "~/GitHub/CEMRA_old/process.R",
+    "project_path": null,
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1628520015219.0,
+    "source_on_save": false,
+    "relative_order": 9,
+    "properties": {
+        "cursorPosition": "184,0",
+        "scrollLine": "143"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1623155813,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1623155813,
+    "read_only": false,
+    "read_only_alternatives": []
+}

@@ -7,6 +7,7 @@
 app_ui <- function(request) {
   library(shinycssloaders)
   library(dplyr)
+  library(DT)
   
   tagList(
     # Leave this function for adding external resources
@@ -40,10 +41,6 @@ app_ui <- function(request) {
                            "Very low" = "VLI",
                            "Extremely low"="ELI"
                       ), selected="MI"),
-          selectInput("INTCOMPARISON", "Control Comparison:",
-                      list("No interventions" = "NoInt",
-                           "Susceptible wearing surgical mask"="SurgicalMask"
-                      )),
           selectInput("ENGVAR", "Engineering controls:",
                       list("None" = "None",
                            "Fresh Air"="Freshair",
@@ -62,6 +59,10 @@ app_ui <- function(request) {
                            "FFP3" = "FFP3",
                            "Worksafe AirHood"="Airhood"
                       )),
+          #selectInput("INTCOMPARISON", "Control Comparison:",
+          #            list("No interventions" = "NoInt",
+          #                 "Susceptible wearing surgical mask"="SurgicalMask"
+          #            )),
           actionButton("Run", "Run"),
           
           

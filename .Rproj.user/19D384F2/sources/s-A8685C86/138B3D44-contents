@@ -15,38 +15,100 @@ devtools::load_all("R/")
   
 # This function is responsible for loading in the selected file
 filedata <- reactive({
-    infile <- input$file1
-    if (is.null(infile)) {
-      # User has not uploaded a file yet
-      return(NULL)
+    if (!is.null(input$file1) & input$SETTING=="None") {
+      infile<-input$file1
+      read.csv(infile$datapath)
+    } else if(input$SETTING=="Hospital"){
+      # put in proper setting file
+      infile<-"data/runs/Test.csv"
+      read.csv(infile)
     }
-    read.csv(infile$datapath)
   })
-
-
-# load up the pre-loaded scenarios
-
-  
   
 # Control data changes based on input
-modeldata <- eventReactive(input$Run, {
-    df<- if(input$ENGVAR=="UVC"){
+modeldata <- reactive({
+    
+  # Change the inputted dataset using a number of params 
+  df<-
       df <- filedata()
+      # INFECTIOUSNESS
+      if(input$INFECTED=="EHI"){
+        df$Infcoughrateperhourmax<-70
+        df$Infcoughrateperhourmin<-60
+        df$Infcoughrateperhourmode<-65
+        df$InfsalivaChenscale<-7
+        df$InfEairTalkSmean<-7
+        df
+      } else if(input$INFECTED=="VHI"){
+        df$Infcoughrateperhourmax<-60
+        df$Infcoughrateperhourmin<-50
+        df$Infcoughrateperhourmode<-55
+        df$InfsalivaChenscale<-6
+        df$InfEairTalkSmean<-6
+        df
+      } else if(input$INFECTED=="HI"){
+        df$Infcoughrateperhourmax<-50
+        df$Infcoughrateperhourmin<-40
+        df$Infcoughrateperhourmode<-45
+        df$InfsalivaChenscale<-5
+        df$InfEairTalkSmean<-5
+        df
+      }else if(input$INFECTED=="MI"){
+        df$Infcoughrateperhourmax<-40
+        df$Infcoughrateperhourmin<-30
+        df$Infcoughrateperhourmode<-35
+        df$InfsalivaChenscale<-4
+        df$InfEairTalkSmean<-4
+        df
+      } else if(input$INFECTED=="LI"){
+        df$Infcoughrateperhourmax<-30
+        df$Infcoughrateperhourmin<-20
+        df$Infcoughrateperhourmode<-25
+        df$InfsalivaChenscale<-3
+        df$InfEairTalkSmean<-3
+        df
+      } else if(input$INFECTED=="VLI"){
+        df$Infcoughrateperhourmax<-20
+        df$Infcoughrateperhourmin<-10
+        df$Infcoughrateperhourmode<-15
+        df$InfsalivaChenscale<-2
+        df$InfEairTalkSmean<-2
+        df
+      }else if(input$INFECTED=="ELI"){
+        df$Infcoughrateperhourmax<-10
+        df$Infcoughrateperhourmin<-1
+        df$Infcoughrateperhourmode<-5
+        df$InfsalivaChenscale<-1
+        df$InfEairTalkSmean<-1
+        df
+      }else{
+        df
+      }
+
+    # ENGINEERING CONTROLS
+      if(input$ENGVAR=="UVC"){
       ACHadd<-850/((df$Roomvolumemin+df$Roomvolumemax)/2)
       df$RoomACHmin <- df$RoomACHmin + ACHadd
       df$RoomACHmax <- df$RoomACHmax + ACHadd
       df
     } else if (input$ENGVAR=="VentHead"){
-      df <- filedata()
+      df$Roomwindowsopen<-"Y"
+      df$Roomwindspeedmin<-1
+      df$Roomwindspeedmax<-4
+      df$RoomsoaW<-0.8
+      df$RoomsoaH<-1
+      df$RoomsoaP<-0.1
+      df
+    } else if (input$ENGVAR=="VentHead"){
       df$InfEairTalkSmin<-0.10*df$InfEairTalkSmin
       df$InfEairTalkSmin<-0.10*df$InfEairTalkSmax
       df$Infcoughrateperhour<-0.10*df$Infcoughrateperhour
       df
     } else{
-      df <- filedata()
       df
     }
     
+    # ADMINISTRATIVE CONTROLS
     if(input$ADMVAR=="Hygiene"){
       df$SuCfomiteprob <-0.146
       df
@@ -54,6 +116,7 @@ modeldata <- eventReactive(input$Run, {
       df
     }
     
+    # PPE CONTROLS
     if(input$PPEVAR=="N95"){
       df$SuCeyeprob<-0.04
       df$SuCsprayprob<-0.05
@@ -76,15 +139,15 @@ modeldata <- eventReactive(input$Run, {
   
 # output params data
 paramdata <- reactive({
-  df <- modeldata()
+  df  <- modeldata()
   df2 <- tidyr::gather(df, key="Parameter")
-  metadata<-data(metadata)
-  df2<-merge(df2, metadata, by="Parameter", all=T)
+  data(metadata)
+  df2 <- merge(df2, metadata, by="Parameter", all=T)
   df2 <- with(df2,df2[order(ID) , ])
   df2 <- subset(df2, select = -c(ID) )
 })
+
 output$params <- renderTable({
-    req(input$file1)
     paramdata()
   })
   

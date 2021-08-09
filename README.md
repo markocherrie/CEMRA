@@ -11,3 +11,8 @@ The general steps for use of CEMRA are as follows:
 3. Run the model 
 4. Compare the model to the baseline scenario
 5. Interpret results
+
+
+## To run the package functions
+
+CEMRA::run_model("Test", 10)

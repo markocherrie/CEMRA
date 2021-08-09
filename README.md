@@ -5,10 +5,6 @@ CEMRA originated from the following Quantitative Microbial Risk Assessment model
 
 CEMRA is a web application developed using the original model, which allows the user to modify the virus load, emissions, controls, patients behaviour and susceptible behaviour.
 
-## To run the app
-
-golem::run_dev()
-
 The general steps for use of CEMRA are as follows:
 1. Choose which scenario fits the location that you are interested in (or upload your own)
 2. Choose which parameters you would like to modify 
@@ -16,6 +12,9 @@ The general steps for use of CEMRA are as follows:
 4. Compare the model to the baseline scenario
 5. Interpret results
 
+## To run the app
+
+golem::run_dev()
 
 ## To run the package functions
 

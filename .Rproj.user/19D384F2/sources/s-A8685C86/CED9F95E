@@ -3,7 +3,7 @@
     "path": "~/GitHub/CEMRA/R/COVIDinfectioncalculatorBATCHnumberinfected.R",
     "project_path": "R/COVIDinfectioncalculatorBATCHnumberinfected.R",
     "type": "r_source",
-    "hash": "1107575154",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1628258502082.0,
@@ -11,7 +11,7 @@
     "relative_order": 8,
     "properties": {
         "tempName": "Untitled1",
-        "cursorPosition": "0,0",
+        "cursorPosition": "19,78",
         "scrollLine": "0"
     },
     "folds": "",

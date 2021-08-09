@@ -18,10 +18,22 @@ filedata <- reactive({
     if (!is.null(input$file1) & input$SETTING=="None") {
       infile<-input$file1
       read.csv(infile$datapath)
-    } else if(input$SETTING=="Hospital"){
+    } else if(is.null(input$file1) & input$SETTING=="Hospital"){
       # put in proper setting file
-      infile<-"data/runs/Test.csv"
+      infile<-"data/runs/Hospital.csv"
       read.csv(infile)
+    } else if(is.null(input$file1) & input$SETTING=="Office"){
+      # put in proper setting file
+      infile<-"data/runs/Office.csv"
+      read.csv(infile)
+    } else if(is.null(input$file1) & input$SETTING=="Restaurant"){
+      # put in proper setting file
+      infile<-"data/runs/Restaurant.csv"
+      read.csv(infile)
+    } else if(is.null(input$file1) & input$SETTING=="Small Retailer"){
+        # put in proper setting file
+        infile<-"data/runs/SmallRetailer.csv"
+        read.csv(infile)
     }
   })
   
@@ -87,11 +99,12 @@ modeldata <- reactive({
 
     # ENGINEERING CONTROLS
       if(input$ENGVAR=="UVC"){
-      ACHadd<-850/((df$Roomvolumemin+df$Roomvolumemax)/2)
-      df$RoomACHmin <- df$RoomACHmin + ACHadd
-      df$RoomACHmax <- df$RoomACHmax + ACHadd
+      df$RoomUVCpurificationinroom<-"Y"
+      RoomUVCmaxflowrate<-450
+      RoomUVCeffmin<-0.9
+      RoomUVCeffmax<-1
       df
-    } else if (input$ENGVAR=="VentHead"){
+    } else if (input$ENGVAR=="Freshair"){
       df$Roomwindowsopen<-"Y"
       df$Roomwindspeedmin<-1
       df$Roomwindspeedmax<-4
@@ -100,9 +113,9 @@ modeldata <- reactive({
       df$RoomsoaP<-0.1
       df
     } else if (input$ENGVAR=="VentHead"){
-      df$InfEairTalkSmin<-0.10*df$InfEairTalkSmin
-      df$InfEairTalkSmin<-0.10*df$InfEairTalkSmax
-      df$Infcoughrateperhour<-0.10*df$Infcoughrateperhour
+      df$InfCexhaleprobmin<-0.06
+      df$InfCexhaleprobmax<-0.27
+      df$InfCexhaleprobmode<-0.17
       df
     } else{
       df

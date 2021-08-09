@@ -26,8 +26,7 @@ app_ui <- function(request) {
                       ".csv")
           ),
           selectInput("SETTING", "Preloaded Scenario:",
-                      list("None"="None",
-                           "Hospital" = "Hospital",
+                      list("Hospital" = "Hospital",
                            "Office" = "Office",
                            "Restaurant"="Restaurant",
                            "Small Retailer"="Small Retailer"

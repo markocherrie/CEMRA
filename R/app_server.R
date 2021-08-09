@@ -15,7 +15,7 @@ devtools::load_all("R/")
   
 # This function is responsible for loading in the selected file
 filedata <- reactive({
-    if (!is.null(input$file1) & input$SETTING=="None") {
+    if (!is.null(input$file1)) {
       infile<-input$file1
       read.csv(infile$datapath)
     } else if(is.null(input$file1) & input$SETTING=="Hospital"){
@@ -130,19 +130,28 @@ modeldata <- reactive({
     }
     
     # PPE CONTROLS
-    if(input$PPEVAR=="N95"){
-      df$SuCeyeprob<-0.04
-      df$SuCsprayprob<-0.05
-      df$SuCinhaleprob<-0.5
+    if(input$PPEVAR=="Surgical Mask"){
+      df$SuCinhaleprobmin<-0.2
+      df$SuCinhaleprobmax<-0.65
+      df$SuCinhaleprobmode<-0.35
       df
-    } else if(input$PPEVAR=="N95inf"){
-      df$InfCsprayprob<-0.05
-      df$InfCexhaleprob<-0.5
+    } else if(input$PPEVAR=="FFP2"){
+      df$SuCinhaleprobmin<-0.01
+      df$SuCinhaleprobmax<-0.35
+      df$SuCinhaleprobmode<-0.1
+      df  
+    } else if(input$PPEVAR=="FFP3"){
+      df$SuCinhaleprobmin<-0.005
+      df$SuCinhaleprobmax<-0.3
+      df$SuCinhaleprobmode<-0.05
       df  
     } else if(input$PPEVAR=="AirHood"){
-      df$SuCeyeprob<-0
-      df$SuCsprayprob<-0
-      df$SuCinhaleprob<-0.01
+      df$SuCinhaleprobmin<-0.0003
+      df$SuCinhaleprobmax<-0.05
+      df$SuCinhaleprobmode<-0.01
+      df$SuChandtouchmin<-0	
+      df$SuChandtouchmax<-0
+      df$SuChandtouchmode<-0
       df
     } else{
       df
@@ -159,7 +168,6 @@ paramdata <- reactive({
   df2 <- with(df2,df2[order(ID) , ])
   df2 <- subset(df2, select = -c(ID) )
 })
-
 output$params <- renderTable({
     paramdata()
   })
@@ -170,7 +178,7 @@ output$summary <- renderPlot({
     
     modeldata <-modeldata()
     
-    modeldataoutput<- COVIDinfectioncalculatorBATCHnumberinfected(modeldata, input$nusimu)
+    modeldataoutput<- COVIDinfectioncalculator(modeldata, 10)
     
     print(modeldataoutput)
     

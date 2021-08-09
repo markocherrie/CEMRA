@@ -7,8 +7,7 @@
 app_ui <- function(request) {
   library(shinycssloaders)
   library(dplyr)
-  library(DT)
-  
+
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
@@ -23,8 +22,7 @@ app_ui <- function(request) {
                     accept = c(
                       "text/csv",
                       "text/comma-separated-values,text/plain",
-                      ".csv")
-          ),
+                      ".csv")),
           selectInput("SETTING", "Preloaded Scenario:",
                       list("Hospital" = "Hospital",
                            "Office" = "Office",

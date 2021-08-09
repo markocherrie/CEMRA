@@ -22,6 +22,10 @@ filedata <- reactive({
     }
     read.csv(infile$datapath)
   })
+
+
+# load up the pre-loaded scenarios
+
   
   
 # Control data changes based on input

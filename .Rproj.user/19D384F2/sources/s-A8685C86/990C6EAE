@@ -8,8 +8,11 @@
     "dirty": false,
     "created": 1628520066959.0,
     "source_on_save": false,
-    "relative_order": 10,
-    "properties": {},
+    "relative_order": 9,
+    "properties": {
+        "cursorPosition": "41,8",
+        "scrollLine": "20"
+    },
     "folds": "51|35|88|0|\n",
     "lastKnownWriteTime": 1623244490,
     "encoding": "UTF-8",

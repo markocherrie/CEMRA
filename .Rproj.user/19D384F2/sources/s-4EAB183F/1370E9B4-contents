@@ -56,14 +56,13 @@ app_ui <- function(request) {
                            "FFP3" = "FFP3",
                            "Worksafe AirHood"="Airhood"
                       )),
-          actionButton("Run", "Run"),
           
           
           
         ),
         mainPanel(
           tabsetPanel(
-            tabPanel("Information", includeHTML("docs/info.html")),
+            tabPanel("Information", includeHTML("data/docs/info.html")),
             tabPanel("Number infected", plotOutput("summary")%>% withSpinner(color="#428bca")),
             tabPanel("Route of transmission", plotOutput("relcon")%>% withSpinner(color="#428bca")),
             tabPanel("Parameters", tableOutput("params"))

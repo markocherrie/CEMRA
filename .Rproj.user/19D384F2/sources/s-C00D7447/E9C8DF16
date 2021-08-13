@@ -1,24 +1,24 @@
 {
-    "id": "F3C73871",
-    "path": "~/GitHub/CEMRA_old/process.R",
-    "project_path": null,
+    "id": "E9C8DF16",
+    "path": "~/GitHub/CEMRA/dev/01_start.R",
+    "project_path": "dev/01_start.R",
     "type": "r_source",
-    "hash": "1326487371",
+    "hash": "0",
     "contents": "",
     "dirty": false,
-    "created": 1628520015219.0,
+    "created": 1628256262899.0,
     "source_on_save": false,
-    "relative_order": 8,
+    "relative_order": 2,
     "properties": {
-        "cursorPosition": "6,15",
+        "cursorPosition": "58,20",
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1623155813,
+    "lastKnownWriteTime": 1628256351,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1623155813,
+    "last_content_update": 1628256351060,
     "read_only": false,
     "read_only_alternatives": []
 }

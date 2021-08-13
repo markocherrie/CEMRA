@@ -1,0 +1,15 @@
+b<-c(10,100,1000)
+time<-c(1,9,94)
+
+e<-as.data.frame(cbind(b,time))
+
+library(ggplot2)
+ggplot(e, aes(x=b, y=time))+
+  geom_line()
+
+lmtime<-lm(time~b)
+
+summary(lmtime)
+
+
+0.0941441*20000-0.1666667

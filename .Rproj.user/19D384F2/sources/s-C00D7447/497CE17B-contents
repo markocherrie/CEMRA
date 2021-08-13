@@ -8,6 +8,14 @@ library(microbenchmark)
 
 library(profvis)
 
-profvis({
-  run_model("Test", 10)
-})
+#profvis({
+#  run_model("Test", 20)
+#})
+
+
+#####
+#start.time <- Sys.time()
+#run_model("Test", 10)
+#end.time <- Sys.time()
+#time.taken <- end.time - start.time
+#time.taken

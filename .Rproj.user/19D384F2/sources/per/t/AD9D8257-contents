@@ -1,5 +1,7 @@
-run_model<-function(ID, B){
+run_model<-function(ID, B, seednumber){
   
+    set.seed(seednumber)
+    
     modeldata<-read.csv(paste0("data/runs/",ID,".csv"))
     
     starttime<-Sys.time()

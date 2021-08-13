@@ -1,22 +1,22 @@
-COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, #6
-                                    distsalivavirusconc,Roomheight,RoomairflowNFFF,Roomvolumemin,Roomvolumemax,#5
-                                    RoomACHmin,RoomACHmax,Roomwindowsopen, #3
-                                    RoomUVCpurificationinroom,	RoomUVCmaxflowrate,	RoomUVCeffmin,	RoomUVCeffmax,#4
-                                    Roomwindspeedmin,Roomwindspeedmax,RoomsoaW,RoomsoaH,RoomsoaP,#5
-                                    RoomNFw, RoomNFh, RoomNFd,Infected, Infcoughrateperhourmin, #5
-                                    Infcoughrateperhourmax,Infcoughrateperhourmode, InfCsprayprobmin, InfCsprayprobmax, InfCsprayprobmode,#5
+COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts,
+                                    distsalivavirusconc,Roomheight,RoomairflowNFFF,Roomvolumemin,Roomvolumemax,
+                                    RoomACHmin,RoomACHmax,Roomwindowsopen, 
+                                    RoomUVCpurificationinroom,	RoomUVCmaxflowrate,	RoomUVCeffmin,	RoomUVCeffmax,
+                                    Roomwindspeedmin,Roomwindspeedmax,RoomsoaW,RoomsoaH,RoomsoaP,
+                                    RoomNFw, RoomNFh, RoomNFd,Infected, Infcoughrateperhourmin,
+                                    Infcoughrateperhourmax,Infcoughrateperhourmode, InfCsprayprobmin, InfCsprayprobmax, InfCsprayprobmode,
                                     InfCexhaleprobmin,InfCexhaleprobmax,InfCexhaleprobmode,Infsurfaces, Infactivity, Infsalivastudy, InfsalivaChenshape, InfsalivaChenscale, InfsalivaIwasakimin, InfsalivaIwasakimax,
-                                    InfEairTalkSmean,InfEairTalkSsd,Sufinger,Suface,Sueye,#5
-                                    SuFFtimemin,SuFFtimemax,SuTmaxa,SuTmaxb,SuTmaxc,#5
-                                    INACTIVaira,INACTIVairb,INACTIVairc,INACTIVsurfacea,INACTIVsurfaceb,#5
-                                    INACTIVsurfacec,INACTIVskinmean,INACTIVskinsd,TRANSsurface.skinshape,TRANSsurface.skinscale,#5
-                                    CONTACTsurfaceNF.handa,CONTACTsurfaceNF.handb,CONTACTsurfaceNF.handc,CONTACTsurfaceFF.handa,CONTACTsurfaceFF.handb,#5
-                                    CONTACTsurfaceFF.handc, CONTACTface.handsize,CONTACTface.handmu,SuTARGETmin,SuTARGETmax,#5
-                                    SuCeyeprob,SuCSPRAYprobmin, SuCSPRAYprobmax,SuCSPRAYprobmode,SuCinhaleprobmin, #5
-                                    SuCinhaleprobmax, SuCinhaleprobmode,SuChandtouchmin, SuChandtouchmax, SuChandtouchmode,#5 
-                                    SuCfomiteprobmin, SuCfomiteprobmax, SuCfomiteprobmode,SuSPRAYprob, Su){ #4
+                                    InfEairTalkSmean,InfEairTalkSsd,Sufinger,Suface,Sueye,
+                                    SuFFtimemin,SuFFtimemax,SuTmaxa,SuTmaxb,SuTmaxc,
+                                    INACTIVaira,INACTIVairb,INACTIVairc,INACTIVsurfacea,INACTIVsurfaceb,
+                                    INACTIVsurfacec,INACTIVskinmean,INACTIVskinsd,TRANSsurface.skinshape,TRANSsurface.skinscale,
+                                    CONTACTsurfaceNF.handa,CONTACTsurfaceNF.handb,CONTACTsurfaceNF.handc,CONTACTsurfaceFF.handa,CONTACTsurfaceFF.handb,
+                                    CONTACTsurfaceFF.handc, CONTACTface.handsize,CONTACTface.handmu,SuTARGETmin,SuTARGETmax,
+                                    SuCeyeprob,SuCSPRAYprobmin, SuCSPRAYprobmax,SuCSPRAYprobmode,SuCinhaleprobmin,
+                                    SuCinhaleprobmax, SuCinhaleprobmode,SuChandtouchmin, SuChandtouchmax, SuChandtouchmode, 
+                                    SuCfomiteprobmin, SuCfomiteprobmax, SuCfomiteprobmode,SuSPRAYprob, Su){ 
   
- 
+  
   #############################################################################################################################################
   # STAGE 1: SET UP THE VARIABLES
   #############################################################################################################################################
@@ -24,6 +24,7 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   ################### DEFINE Room VARIABLES ########################
   
   # room volume, m^3
+   
   V<-runif(1, min=Roomvolumemin, max=Roomvolumemax)
   W<-sqrt(V/Roomheight)
 
@@ -35,10 +36,12 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   betaNF<-NFsizeperc*Roomheight*W*RoomairflowNFFF
   
   # Air changes per hour
+   
   ACH<-runif(1, min=RoomACHmin, max=RoomACHmax)
   
   # if windows open; recalculate the ACH rule of thumb equation from p40 here: https://www.who.int/water_sanitation_health/publications/natural_ventilation.pdf
   if(Roomwindowsopen=="Y"){
+   
   ACH<-(0.65*(runif(1, Roomwindspeedmin, Roomwindspeedmax)*(RoomsoaW*RoomsoaH*RoomsoaP)*3600))/V
   } else{
   ACH<-ACH
@@ -46,6 +49,7 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   
   # if UVC unit it the room
   if(RoomUVCpurificationinroom=="Y"){
+     
     ACH<-ACH+((RoomUVCmaxflowrate/V)*runif(1,RoomUVCeffmin, RoomUVCeffmax))
   } else{
     ACH<-ACH
@@ -58,14 +62,16 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   
   # Time spent in FF (in 10th of percentage)
   values<-seq(SuFFtimemin, SuFFtimemax, by=10)
+   
   FFtime<-sample(values, 1)
   
   ### Tmax is the duration of the exposure period, minutes (Phan et al. (2019))
   library(triangle)
+   
   Tmax<-rtriangle(1, a=SuTmaxa, b=SuTmaxb, c=SuTmaxc)
   
   ################### EMISSION VARIABLES ########################
-
+   
   Infcoughrateperhour<-rtriangle(1, a=Infcoughrateperhourmin, b=Infcoughrateperhourmax, c=Infcoughrateperhourmode)
   
   # Number of people in FF that are infected
@@ -73,20 +79,24 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   
   # COUGHrate is the rate of cough, unit is per minute, after dividing by 60
   # multiple by any controls on the coughs
+   
   COUGHrate<-(Infcoughrateperhour/60)*(rtriangle(a=InfCsprayprobmin,b=InfCsprayprobmax, c=InfCsprayprobmode))
   
   # CONCsaliva is the concentration of SARS-CoV-2 (To et al., 2020)
   # unit is log10 infectious copies per mL
   # take to the power 10 to make units infectious virus per mL
   if(Infsalivastudy=="Chen"){
+     
   CONCsaliva<-(10^rweibull(1, shape=InfsalivaChenshape, scale=InfsalivaChenscale))
   } else if(Infsalivastudy=="Iwasaki"){
+     
   CONCsaliva<-(10^runif(1, min=InfsalivaIwasakimin, max=InfsalivaIwasakimax))
   }
   # the number of coughs during the exposure event
   Ncough<-round(Tmax*COUGHrate)
   
   # adjust gene copies (unit of emission) to PFU (unit of dose-response)
+   
   gf<-runif(1, 500, 1000)	
   
   # Apply behaviour modification factor
@@ -121,11 +131,13 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   }
   
   # Virus emitted gene copies per minute with breathing/talking (distribution based on leung, Zhou and Ma)
+   
   InfEairTalkS<-rlnorm(1, meanlog=InfEairTalkSmean, sdlog=InfEairTalkSsd)
   InfEairTalkSQA<-InfEairTalkS*quantaexhalationrate
   
   # Apply the emission control (e.g. ventilated headboard)
-  EairTalkS<-InfEairTalkSQA*rltriangle(n=1, a=InfCexhaleprobmin, b=InfCexhaleprobmax, c=InfCexhaleprobmode)
+   
+  EairTalkS<-InfEairTalkSQA*rtriangle(n=1, a=InfCexhaleprobmin, b=InfCexhaleprobmax, c=InfCexhaleprobmode)
   #Emission per minute from breathing/talking
   EairTalk<-EairTalkS
 
@@ -133,17 +145,21 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   
   # INACTIVair is the inactivation rate SARS-2 (Van Doremanlen, 2020) 
   # units per minute after dividing by 60
+   
   INACTIVair<-rltriangle(n=1, a=INACTIVaira, b=INACTIVairb, c=INACTIVairc)/60
   
   # INACTIVsurface is the invactivation rate of SARS-2 on plastic (Van Doremanlen, 2020)
   # units per minute after dividing by 60
+   
   INACTIVsurface<-rltriangle(n=1, a=INACTIVsurfacea, b=INACTIVsurfaceb, c=INACTIVsurfacec)/60
   
   # INACTIVskin is the inactvation rate of influenza on skin, units per minute
+   
   INACTIVskin<-rnorm(1,mean=INACTIVskinmean, sd=INACTIVskinsd)/60
   # ensure the the normal distribution always returns a positive value
   while (length(INACTIVskin[INACTIVskin<=0])>=1){
     n<-length(INACTIVskin[INACTIVskin<=0])
+     
     INACTIVskin[INACTIVskin<=0]<-rnorm(n,mean=INACTIVskinmean, sd=INACTIVskinsd)/60
   }
   
@@ -154,10 +170,12 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   
   # TRANSsurface.skin is the effectiveness of transfer between  substrates and skin
   # unit is proportion (0,1]
+   
   TRANSsurface.skin<-rweibull(1,TRANSsurface.skinshape, TRANSsurface.skinscale)
   # ensure that Webiull distribution returns a valuein the range of (0,1]
   while (length(TRANSsurface.skin[TRANSsurface.skin>1])>=1){
     n<-length(TRANSsurface.skin[TRANSsurface.skin>1])
+     
     TRANSsurface.skin[TRANSsurface.skin>1]<-rweibull(n,TRANSsurface.skinshape, TRANSsurface.skinscale)
   }
   
@@ -168,19 +186,23 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   # CONTACTsurfaceNF.hand is the frequency of contact between hands and surfaces in the near-field 
   # from Phan et al. (2019), 
   # unit is touch per minute after dividing by 60
+   
   CONTACTsurfaceNF.hand<-rtriangle(n=1, a=CONTACTsurfaceNF.handa, b=CONTACTsurfaceNF.handb, c=CONTACTsurfaceNF.handc)/60
   
   # CONTACTsurfaceFF.hand is the frequency of contact between hands and surfaces in the far-field 
   # from Phan et al. (2019) 
   # unit is touch per minute 
+   
   CONTACTsurfaceFF.hand<-rtriangle(n=1, a=CONTACTsurfaceFF.handa, b=CONTACTsurfaceFF.handb, c=CONTACTsurfaceFF.handc)/60
   
   # CONTACTface.hand is the frequency of contact between hands and facial mucous membranes of worker
   # data is distribution of the number of contacts with mask observed by Phan et al. (2019)
   # divide by duration of exposure to get contact rate
+   
   CONTACTface.hand<-(rnbinom(1, size=CONTACTface.handsize, mu=CONTACTface.handmu)*rtriangle(1, a=SuChandtouchmin, b=SuChandtouchmax, c=SuChandtouchmode))/Tmax
   
   # pTARGET is the proportion of particles that deposit on the facial musous membranes which reach receptors in the respiratory tract
+   
   pTARGET<-runif(1,min=SuTARGETmin, max=SuTARGETmax)
   
   ################### SIZE AND COUNT DISTRIBUTION OF PARTICLES, BASED ON CHAO (2009) VARIABLES ########################
@@ -234,10 +256,13 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   # amount of virus that reaches the eyes
   Feye<-rep(SuCeyeprob,1)
   # amount of spray material that reaches facial mucous membranes
+   
   Fspray<-rep(rtriangle(1, a=SuCSPRAYprobmin, b=SuCSPRAYprobmax, c=SuCSPRAYprobmode),1)
   # amount of airborne material that is inhaled 
+   
   Finhale<-rep(rtriangle(1, a=SuCinhaleprobmin, b=SuCinhaleprobmax, c=SuCinhaleprobmode),1)
   # amount of fomite contact dose
+   
   Ffomite<-rep(rtriangle(1, a=SuCfomiteprobmin, b=SuCfomiteprobmax, c=SuCfomiteprobmode),1)
   
   #############################################################################################################################################
@@ -415,6 +440,7 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
     for (n in 1:Ncough){
       for (i in 1:16){
         #sample the number of particles in each particle size bin 
+         
         n.cough.particle[i,n]<-rpois(1,ChaoCough[i,7])
         
         
@@ -483,32 +509,47 @@ COVIDinfectioncalculator<- function(ID, seednumber,dt,DRk,ExtraExpVolStudy,Vts, 
   
   # Create the binary variable for which transisition matrix to use in the matrix multiplication
   if(FFtime == 100){
+     
     choice<-sample(c(0,0,0,0,0,0,0,0,0,0),Tmax/dt, replace=TRUE)
   } else if(FFtime == 90){
+     
     choice<-sample(c(1,0,0,0,0,0,0,0,0,0),Tmax/dt, replace=TRUE)
   } else if(FFtime == 80){
+     
     choice<-sample(c(1,1,0,0,0,0,0,0,0,0),Tmax/dt, replace=TRUE)
   } else if(FFtime == 70){
+     
     choice<-sample(c(1,1,1,0,0,0,0,0,0,0),Tmax/dt, replace=TRUE)
   } else if(FFtime == 60){
+     
     choice<-sample(c(1,1,1,1,0,0,0,0,0,0),Tmax/dt, replace=TRUE)
   } else if(FFtime == 50){
+     
     choice<-sample(c(1,1,1,1,1,0,0,0,0,0),Tmax/dt, replace=TRUE)
   } else if(FFtime == 40){
+     
     choice<-sample(c(1,1,1,1,1,1,0,0,0,0),Tmax/dt, replace=TRUE)
   } else if(FFtime == 30){
+     
     choice<-sample(c(1,1,1,1,1,1,1,0,0,0),Tmax/dt, replace=TRUE)
   } else if(FFtime == 20){
+     
     choice<-sample(c(1,1,1,1,1,1,1,1,0,0),Tmax/dt, replace=TRUE)
   } else if(FFtime == 10){
+     
     choice<-sample(c(1,1,1,1,1,1,1,1,1,0),Tmax/dt, replace=TRUE)
   } else if(FFtime == 0){
+     
     choice<-sample(c(1,1,1,1,1,1,1,1,1,1),Tmax/dt, replace=TRUE)
   }
   
 ########################################### VECTORISE? ############################################
-  # now simulate the Markov chain 
+
+# now simulate the Markov chain 
   Ptemp<-P
+  
+  #condition<-choice
+  
   for (t in 2:(Tmax/dt)){
     if (choice[t]==1){Ptemp<-Ptemp%*%P}
     if (choice[t]==0){Ptemp<-Ptemp%*%Pn}

@@ -1,3 +1,5 @@
+library(compiler)
+COVIDinfectioncalculator<-cmpfun(
 COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts,
                                     distsalivavirusconc,Roomheight,RoomairflowNFFF,Roomvolumemin,Roomvolumemax,
                                     RoomACHmin,RoomACHmax,Roomwindowsopen, 
@@ -548,11 +550,16 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts,
 # now simulate the Markov chain 
   Ptemp<-P
   
-  #condition<-choice
+  # create boolean for choice
+  condition<-as.logical(choice)
   
+  # start from 2 because 1 is the intial concentrations
   for (t in 2:(Tmax/dt)){
-    if (choice[t]==1){Ptemp<-Ptemp%*%P}
-    if (choice[t]==0){Ptemp<-Ptemp%*%Pn}
+    if (condition[i]){
+      Ptemp<-Ptemp%*%P
+    } else{
+      Ptemp<-Ptemp%*%Pn
+    }
     
     trackP[t,]<-c(Ptemp[1,6], Ptemp[1,5], Ptemp[2,5],Ptemp[1,10])
     trackFF[t,]<-c(Ptemp[9,6], Ptemp[9,5], Ptemp[3,5],Ptemp[9,10])
@@ -619,19 +626,22 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts,
       for (i in 10:16){
         
         # if there are no particles in the size bin
-        if (n.cough.particle[i,n] == 0) {doseS[i,n]<-0}
+        if (n.cough.particle[i,n] == 0) {
+          doseS[i,n]<-0
+          }
         # if there are particles in the size bin
         if (n.cough.particle[i,n]!=0) {
           # number of pathogens in particles that land on face 
           doseS[i,n]<-n.paths.cough.particle[i,n]*probthin               
-          
         }
       }
       
       # now the spray inhalation
       for (i in 1:9){
         # if there are no particles in the size bin
-        if (n.cough.particle[i,n] == 0) {doseI[i,n]<-0}
+        if (n.cough.particle[i,n] == 0) {
+          doseI[i,n]<-0
+          }
         # if there are particles in the size bin
         if (n.cough.particle[i,n]!=0) {
           # number of pathogens in particles that are inspired
@@ -696,4 +706,4 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts,
   result<-data.frame(result)
   return(result)
 }
-
+)

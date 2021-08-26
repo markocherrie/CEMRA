@@ -1,0 +1,32 @@
+masterrun2<-function(ID, B){
+  
+  source("COVIDinfectioncalculator_2.R")
+  
+  COVIDRUN<-function(ID, B){
+    modeldata<-read.csv(paste0("data/runs/",ID,".csv"))
+    #modeldata<-modeldata %>%filter(ID=="CEMRA_FFP3")
+    
+    
+    starttime<-Sys.time()
+    # Specify how many iterations
+    RUN<-do.call("rbind", replicate(B, modeldata, simplify = FALSE))
+    
+    # Run the function
+    output<-plyr::mdply(RUN, COVIDinfectioncalculator)
+    endtime<-Sys.time()
+    totaltime<-starttime-endtime
+    totaltime
+    
+    write.csv(output, paste0("output/", ID ,".csv"))
+  }
+  
+  COVIDRUN(ID, B)
+}
+
+# test
+#masterrun2("finalrun", 2000)
+
+
+#masterrun2("finalrun2", 2000)
+
+masterrun2("finalrun5", 2000)

@@ -68,7 +68,7 @@ app_ui <- function(request) {
                            "FFP3" = "FFP3",
                            "Worksafe AirHood"="Airhood"
                       )),
-          actionButton("button", "Go"),
+          actionButton("button", "Model"),
           
           
           
@@ -76,9 +76,9 @@ app_ui <- function(request) {
         mainPanel(
           tabsetPanel(
             tabPanel("Information", includeHTML("data/docs/info.html")),
-            tabPanel("Number infected", plotlyOutput("summary")%>% withSpinner(color="#428bca")),
-            tabPanel("Route of transmission", plotOutput("relcon")%>% withSpinner(color="#428bca")),
-            tabPanel("Parameters", tableOutput("params"))
+            tabPanel("Parameters", tableOutput("params")),
+            tabPanel("Number infected", plotlyOutput("numberinfectedgraph")%>% withSpinner(color="#428bca"), textOutput("infectedtextbaseline"), textOutput("infectedtextcomparison")),
+            tabPanel("Route of transmission", plotOutput("relcon", width = "100%")%>% withSpinner(color="#428bca"))
           )
         )
       )

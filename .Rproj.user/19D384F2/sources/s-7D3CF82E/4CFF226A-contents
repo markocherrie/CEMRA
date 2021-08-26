@@ -1,0 +1,97 @@
+w1<-read.csv("output/finalrun4.csv")
+
+
+########## graphs
+library(dplyr)
+library(tidyr)
+
+w3long<-w1 %>% 
+  mutate(CONTACT=      rFACE  /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100, 
+         INHALATION_NF=rLUNGNF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100,
+         INHALATION_FF=rLUNGFF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100,
+         SPRAY=        rSPRAY /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100)%>%
+  mutate(infectionstatus = sub('^.+_', '', ID))%>%
+  select(ID ,CONTACT, INHALATION_NF, INHALATION_FF, SPRAY, infectionstatus) %>%
+  pivot_longer(cols=c(CONTACT, INHALATION_NF, INHALATION_FF, SPRAY))
+
+#w3long<-w3long%>%
+ # filter(str_detect(ID,"CEMRA_BASELINE_noint$|CEMRA_BASELINE_surgicalmask$|CEMRA_PPE_FFP2$|CEMRA_PPE_FFP3$|CEMRA_PPE_Airhood$|
+#  CEMRA_ENG_surgicalmask_freshair$|CEMRA_ENG_surgicalmask_UVC_bcs$|CEMRA_ENG_surgicalmask_VentHead$|CEMRA_ADM_surgicalmask_surfacedis$|CEMRA_ADM_surgicalmask_surfacedishandhygiene$"))%>%
+#  mutate(ID=factor(ID, levels=c("CEMRA_BASELINE_noint","CEMRA_BASELINE_surgicalmask","CEMRA_PPE_FFP2","CEMRA_PPE_FFP3","CEMRA_PPE_Airhood",
+ #                               "CEMRA_ENG_surgicalmask_freshair","CEMRA_ENG_surgicalmask_UVC_bcs", "CEMRA_ENG_surgicalmask_VentHead",
+ #                               "CEMRA_ADM_surgicalmask_surfacedis","CEMRA_ADM_surgicalmask_surfacedishandhygiene")))
+  
+  
+######### 
+
+relativecontributions<-w1 %>% 
+  group_by(ID) %>%
+  summarise(CONTACT_mean=      mean(rFACE  /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100), sdcontact=sd(rFACE/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
+            INHALATION_NF_mean=mean(rLUNGNF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100), sdinhalation=sd(rLUNGNF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
+            INHALATION_FF_mean=mean(rLUNGFF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100), sdinhalation=sd(rLUNGFF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
+            SPRAY_mean=        mean(rSPRAY /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100), sdspray=sd(rSPRAY/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100))
+
+#relativecontributions
+
+w3long$name<-factor(w3long$name, levels=c(
+  "INHALATION_NF",
+  "INHALATION_FF",
+  "SPRAY",
+  "CONTACT"))
+
+lvls <- names(sort(tapply(w3long$name == "INHALATION_NF", w3long$value, mean)))
+
+
+routeall<-ggplot(w3long, aes(x = ID, y = value, fill =name)) +
+  geom_col(position = "fill") + 
+  theme(axis.text.x = element_text(angle = 45, hjust=1))+
+  theme(
+    axis.title.x=element_blank(),
+    axis.text.x = element_blank(), 
+    axis.ticks = element_blank())+
+  theme(text = element_text(size=16))+
+  ylab("Route")
+
+library(plotly)
+
+#ggplotly(routeall)
+
+
+#plotw3long<- w3long %>% filter(str_detect(ID,"CEMRA_BASELINE_surgicalmask_spraydom$"))
+
+w3long$ID<-gsub("UVC_irl", "UVCirl", w3long$ID)
+w3long$ID<-gsub("UVC_bcs", "UVCbcs", w3long$ID)
+w3long$ID<-gsub("UVC_bcs", "UVCbcs", w3long$ID)
+w3long$ID<-gsub("BASELINE", "BASELINE_BASELINE", w3long$ID)
+w3long$ID<-gsub("PPE", "PPE_PPE", w3long$ID)
+
+
+w3long$int<-stringr::str_split_fixed(w3long$ID, "_", 5)[,4]
+
+w3longnoint<-w3long %>% filter(int=="noint")
+
+w3longnoint$infectionstatus<-factor(w3longnoint$infectionstatus,
+                                        levels=c("extremelylow", 
+                                                                            "verylow",
+                                                                            "low", 
+                                                                            "average", 
+                                                                            "high",
+                                                                            "veryhigh", 
+                                                                            "extremelyhigh"))
+
+
+
+ggplot(w3longnoint, aes(x=name, y=value))+
+  geom_boxplot()+
+  xlab("Route")+
+  ylab("Percentage of infection risk")+
+  theme(text = element_text(size=16))+
+  facet_wrap(~ infectionstatus)
+
+
+
+
+
+
+
+

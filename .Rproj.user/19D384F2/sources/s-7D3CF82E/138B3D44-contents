@@ -14,6 +14,11 @@ app_server <- function( input, output, session ) {
 devtools::load_all("R/")
   
 # This function is responsible for loading in the selected file
+# more variation in the scenario
+  # hospital - single patient room
+  # hospital - multi patient room
+  # hosptial - 
+  
 filedata <- reactive({
     if (!is.null(input$file1)) {
       infile<-input$file1
@@ -35,9 +40,10 @@ filedata <- reactive({
   })
   
 # Generate the input data
+
+# allow more than one to be selected
 modeldata <- reactive({
     
-  # Change the inputted dataset using a number of params 
   df <- filedata()
       # INFECTIOUSNESS
       if(input$INFECTED=="EHI"){
@@ -127,7 +133,7 @@ modeldata <- reactive({
       df
     }
     
-    ################## ADMINISTRATIVE CONTROLS #################### FILLL THESE IN PROPERLY
+    ################## ADMINISTRATIVE CONTROLS #################### FILL THESE IN PROPERLY
     if(input$ADMVAR=="Hygiene"){
       df$SuCfomiteprob <-0.146
       df$ID<-paste0(df$ID, "_Hygiene")
@@ -135,6 +141,8 @@ modeldata <- reactive({
     } else{
       df
     }
+  
+  ##############################################################
     
     # PPE CONTROLS
     if(input$PPEVAR=="Surgical Mask"){
@@ -176,6 +184,10 @@ baselinedata <- reactive({
 
   
 # Create the params table for output
+
+# change the metadata based on pre-loaded scenario - if user loaded then no refs??
+
+
 paramdata <- reactive({
   df  <- modeldata()
   df2 <- tidyr::gather(df, key="Parameter")
@@ -188,33 +200,29 @@ paramdata <- reactive({
 
 # run the model on the "button"
 
+masteroutput <-eventReactive(input$button, {
+  modeldata <- modeldata()
+  baselinedata  <-baselinedata()
+  
+  # Specify how many iterations
+  RUN<-do.call("rbind", replicate(100, modeldata, simplify = FALSE))
+  RUN2<-do.call("rbind", replicate(100, baselinedata, simplify = FALSE))
+  RUN3<-rbind(RUN, RUN2)
+  
+  # Run the function
+  masteroutput<-plyr::mdply(RUN3, COVIDinfectioncalculator)
+})
 
 #
 output$params <- renderTable({
     paramdata()
   })
 
+# Generate number of infected plot
+output$numberinfectedgraph <- renderPlotly({
 
-
-
-
-
-# Generate a summary of the data
-output$summary <- renderPlotly({
-
-    modeldata <- modeldata()
-    baselinedata  <-baselinedata()
-    
-    # Specify how many iterations
-    RUN<-do.call("rbind", replicate(100, modeldata, simplify = FALSE))
-    RUN2<-do.call("rbind", replicate(100, baselinedata, simplify = FALSE))
-    RUN3<-rbind(RUN, RUN2)
-    
-    # Run the function
-    masteroutput<-plyr::mdply(RUN3, COVIDinfectioncalculator)
+    masteroutput <- masteroutput()
     masteroutput$numberinfected<-as.numeric(masteroutput$numberinfected)
-    
-    
     masteroutput <- masteroutput %>% select(ID,numberinfected)
   
     library(ggplot2)
@@ -225,65 +233,90 @@ output$summary <- renderPlotly({
         axis.title.x=element_blank(),
         axis.text.x = element_blank(), 
         axis.ticks = element_blank())+
-      theme(text = element_text(size=16))
+      theme(text = element_text(size=12))
     d<-d + scale_y_continuous(trans='log10')+
-      ylab("Risk per single patient patient care activity")
+      ylab("Risk per single patient care activity")
     library(plotly)
     d<-ggplotly(d)
     
   })
 
+# Generate number of infected text
+output$infectedtextbaseline <- renderText({
+ 
+  masteroutput <- masteroutput()
+  masteroutput$numberinfected<-as.numeric(masteroutput$numberinfected)
+  masteroutput <- masteroutput %>% select(ID,numberinfected)
+  
+  masteroutput<-masteroutput %>%
+    group_by(ID) %>%
+    summarise(mediannumberinfected=median(numberinfected, na.rm=T))
+  
+  paste("The median number of infected for ",masteroutput$ID[1], "is ", (round(masteroutput$mediannumberinfected[1]*100000,3)), "per 100,000")
+  
+})
+
+output$infectedtextcomparison <- renderText({
+  
+  masteroutput <- masteroutput()
+  masteroutput$numberinfected<-as.numeric(masteroutput$numberinfected)
+  masteroutput <- masteroutput %>% select(ID,numberinfected)
+  
+  masteroutput<-masteroutput %>%
+    group_by(ID) %>%
+    summarise(mediannumberinfected=median(numberinfected, na.rm=T))
+  
+  paste("The median number of infected for ",masteroutput$ID[2], "is ", (round(masteroutput$mediannumberinfected[2]*100000,3)), "per 100,000")
+  
+})
+
+# could put percentage change in text?
+
 # Generate relcon plot
 output$relcon <- renderPlot({
-    if (is.null(input$file1)){return("")} 
-    modeldata <-modeldata()
-    modeldataoutput<- COVIDinfectioncalculatorBATCHrelativecontributions(modeldata, input$nusimu)
-    mean <- t(modeldataoutput[,grep("_mean*", names(modeldataoutput))])
-    mean <- mean[c(1,3,2),1]
-    LL<-t(modeldataoutput[,grep("_LL*", names(modeldataoutput))])
-    UL<-t(modeldataoutput[,grep("_UL*", names(modeldataoutput))])
-    plotdata<-as.data.frame(cbind(mean, LL, UL))
-    colnames(plotdata)<-c("mean", "LL", "UL")
-    plotdata$route<-gsub("_mean", "",row.names(plotdata))
-    plotdata
+
+    masteroutput <- masteroutput()
+  
+    masteroutput<-masteroutput %>% 
+      group_by(ID) %>%
+      select(ID, rFACE, rLUNGNF, rLUNGFF, rSPRAY) %>%
+      mutate_at(., c("rFACE", "rLUNGNF", "rLUNGFF", "rSPRAY"), ~as.numeric(.)) %>%
+      summarise(CONTACT_mean =      mean(rFACE  /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
+                INHALATION_NF_mean = mean(rLUNGNF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
+                INHALATION_FF_mean = mean(rLUNGFF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
+                SPRAY_mean =        mean(rSPRAY /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100))
     
-    print(plotdata)
-    
-    repfactor<-round(plotdata$mean)
-    contactvals<-rep("Contact",repfactor[1])
-    sprayvals<-rep("Spray",repfactor[2])
-    inhalationvals<-rep("Inhalation",repfactor[3])
-    allvals<-c(contactvals, sprayvals, inhalationvals)
-    # make to 100%
-    allvals<-as.data.frame(allvals)
-    allvals$allvals<-as.character(allvals$allvals)
-    allvals$id<-1
+    # to get 100%
+    # https://stackoverflow.com/questions/13483430/how-to-make-rounded-percentages-add-up-to-100
     
     
-    group.colors <- c(Contact = "#E69F00", Spray = "#0072B2", Inhalation= "#CC79A7")
+    masteroutput <- tidyr::pivot_longer(masteroutput,cols=CONTACT_mean :SPRAY_mean) 
     
-    
-    waffledata<-waffle_iron(allvals, aes_d(group = allvals), rows=10)
-    
-    
-    colnames(waffledata)<-c("x", "y", "z")
-    
-    library(emojifont)  
+    library(hrbrthemes)
+    library(waffle)
+    library(ggplot2)
     library(dplyr)
-    ggplot(waffledata, aes(x, y, fill = z)) + 
-      geom_waffle() +
-      scale_fill_manual(values=group.colors)+
-      coord_equal() + 
-      theme_waffle() +
-      xlab("")+
-      ylab("")+
-      ggtitle(" ")+
-      theme(legend.position="bottom")+
-      theme(legend.title = element_blank()) +
-      theme(plot.title = element_text(hjust = 0.5))+
-      theme(plot.title = element_text(size = 15, face = "bold"))
+      masteroutput %>%
+      ggplot(aes(fill = name, values = value)) +
+      expand_limits(x=c(0,0), y=c(0,0)) +
+      coord_equal() +
+      labs(fill = NULL, colour = NULL) +
+      theme_ipsum_rc(grid="") +
+      theme_enhance_waffle() -> waffleplot
     
+    #group.colors <- c(Contact = "#E69F00", Spray = "#0072B2", `NF Inhalation`= "#CC79A7", `FF Inhalation`="#d9c7d1")
+    
+    
+    waffleplot +
+      geom_waffle(
+        color = "white", size = 0.33
+      ) +
+      facet_wrap(~ID) +
+      theme(strip.text.x = element_text(hjust = 0.5))
+
   })
+
+
   
   
   

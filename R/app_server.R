@@ -135,10 +135,16 @@ modeldata <- reactive({
     
     ################## ADMINISTRATIVE CONTROLS #################### FILL THESE IN PROPERLY
     if(input$ADMVAR=="Hygiene"){
-      df$SuCfomiteprob <-0.146
-      df$ID<-paste0(df$ID, "_Hygiene")
+      df$SuCfomiteprobmin<-0.38
+      df$SuCfomiteprobmax<-0.86
+      df$SuCfomiteprobmode<-0.583
+      df$ID<-paste0(df$ID, "_SurfaceDisinfection")
       df
-    } else{
+    } else if(input$ADMVAR=="Hygiene2"){
+      df$SuCfomiteprobmin<-0
+      df$SuCfomiteprobmax<-0.47
+      df$SuCfomiteprobmode<-0.146
+      df$ID<-paste0(df$ID, "_SurfaceDisinfectionandhandhygiene")
       df
     }
   

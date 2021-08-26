@@ -4,17 +4,29 @@
 #'     DO NOT REMOVE.
 #' @import shiny
 #' @noRd
+#' 
+#' 
+
 app_ui <- function(request) {
   library(shinycssloaders)
   library(dplyr)
-
+  library(plotly)
+  
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic 
     fluidPage(
       # App title ----
-      titlePanel("Covid Exposure Model and Risk App (CEMRA)"),
+      #titlePanel("Covid Exposure Model and Risk App (CEMRA)"),
+      headerPanel(
+        fluidRow(
+          column(11, h1("Covid Exposure Model and Risk App (CEMRA)", 
+                        style = "'font-weight': bold; 'font-size': 39px")),
+          column(1, offset=-1, tags$a(href="https://www.iom-world.org/",img(height = 79.5225, width = 78.384)))
+        )
+        , windowTitle = "Covid Exposure Model and Risk App (CEMRA)"),
+      
       
       sidebarLayout(
         sidebarPanel(
@@ -56,6 +68,7 @@ app_ui <- function(request) {
                            "FFP3" = "FFP3",
                            "Worksafe AirHood"="Airhood"
                       )),
+          actionButton("button", "Go"),
           
           
           
@@ -63,7 +76,7 @@ app_ui <- function(request) {
         mainPanel(
           tabsetPanel(
             tabPanel("Information", includeHTML("data/docs/info.html")),
-            tabPanel("Number infected", plotOutput("summary")%>% withSpinner(color="#428bca")),
+            tabPanel("Number infected", plotlyOutput("summary")%>% withSpinner(color="#428bca")),
             tabPanel("Route of transmission", plotOutput("relcon")%>% withSpinner(color="#428bca")),
             tabPanel("Parameters", tableOutput("params"))
           )

@@ -1,0 +1,8 @@
+memory profiling: GC profiling: line profiling: sample.interval=10000
+:1316792:21741656:84310016:0:"tryCatchOne" "tryCatchList" "tryCatch" ".rs.callAs" "Rprof" "profvis" 
+#File 1: <expr>
+:1342905:21859800:93050104:7481:"rbind" "rbind" "run_model" 1#2 "profvis" 
+:1373429:21859800:104163864:10852:"profvis" 
+:1406869:21859800:116339272:11888:"rbind" "rbind" "run_model" 1#2 "profvis" 
+#File 2: C:/Users/mark.cherrie/Documents/GitHub/CEMRA/R/run_model.R
+:1477649:21984162:129559696:4977:"create_progress_bar" "llply" "ldply" "adply" "plyr::mdply" 2#11 "run_model" 1#2 "profvis" 

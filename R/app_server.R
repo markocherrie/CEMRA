@@ -19,7 +19,6 @@ filedata <- reactive({
       infile<-input$file1
       read.csv(infile$datapath)
     } else if(is.null(input$file1) & input$SETTING=="Hospital"){
-      ########################## put in proper setting files ##############################
       infile<-"data/runs/Hospital.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Office"){
@@ -185,12 +184,23 @@ paramdata <- reactive({
   df2 <- with(df2,df2[order(ID) , ])
   df2 <- subset(df2, select = -c(ID) )
 })
+
+
+# run the model on the "button"
+
+
+#
 output$params <- renderTable({
     paramdata()
   })
-  
+
+
+
+
+
+
 # Generate a summary of the data
-output$summary <- renderPlot({
+output$summary <- renderPlotly({
 
     modeldata <- modeldata()
     baselinedata  <-baselinedata()
@@ -208,9 +218,18 @@ output$summary <- renderPlot({
     masteroutput <- masteroutput %>% select(ID,numberinfected)
   
     library(ggplot2)
-    ggplot(masteroutput, aes(x=ID, y=numberinfected))+
-      geom_violin()+theme(axis.text=element_text(size=12),
-                          axis.title=element_text(size=14,face="bold"))
+    d<-ggplot(masteroutput, aes(x=ID, y=numberinfected))+
+      geom_violin()+
+      facet_wrap(~ID, scales="free_x")+
+      theme(
+        axis.title.x=element_blank(),
+        axis.text.x = element_blank(), 
+        axis.ticks = element_blank())+
+      theme(text = element_text(size=16))
+    d<-d + scale_y_continuous(trans='log10')+
+      ylab("Risk per single patient patient care activity")
+    library(plotly)
+    d<-ggplotly(d)
     
   })
 

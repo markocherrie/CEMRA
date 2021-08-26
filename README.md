@@ -27,5 +27,5 @@ CEMRA::run_model("Test", 10)
 
 
 ## Issues to fix
-1. Currently 1000 runs takes 94 seconds which is too slow for the app (try parallelisation)
-
+1. Currently 1000 runs takes 94 seconds which is too slow for the app
+2. Currently 1000 runs takes 33 seconds which is too slow for the app (update)

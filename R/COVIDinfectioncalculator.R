@@ -1,4 +1,5 @@
 library(compiler)
+library(triangle)
 COVIDinfectioncalculator<-cmpfun(
 COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts,
                                     distsalivavirusconc,Roomheight,RoomairflowNFFF,Roomvolumemin,Roomvolumemax,
@@ -68,7 +69,7 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts,
   FFtime<-sample(values, 1)
   
   ### Tmax is the duration of the exposure period, minutes (Phan et al. (2019))
-  library(triangle)
+  #library(triangle)
    
   Tmax<-rtriangle(1, a=SuTmaxa, b=SuTmaxb, c=SuTmaxc)
   
@@ -90,9 +91,11 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts,
   if(Infsalivastudy=="Chen"){
      
   CONCsaliva<-(10^rweibull(1, shape=InfsalivaChenshape, scale=InfsalivaChenscale))
+  
   } else if(Infsalivastudy=="Iwasaki"){
      
   CONCsaliva<-(10^runif(1, min=InfsalivaIwasakimin, max=InfsalivaIwasakimax))
+  
   }
   # the number of coughs during the exposure event
   Ncough<-round(Tmax*COUGHrate)
@@ -553,18 +556,28 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts,
   # create boolean for choice
   condition<-as.logical(choice)
   
+  #library(foreach)
+  #library(doParallel)
+  
+  #numCores <- detectCores()
+  
   # start from 2 because 1 is the intial concentrations
-  for (t in 2:(Tmax/dt)){
-    if (condition[i]){
+  #cl <- parallel::makeCluster(numCores)
+  #doParallel::registerDoParallel(cl)
+  # , .combine=rbind) %dopar%
+  
+   for (t in 2:(Tmax/dt)){
+    if (condition[t]){
       Ptemp<-Ptemp%*%P
     } else{
       Ptemp<-Ptemp%*%Pn
     }
-    
     trackP[t,]<-c(Ptemp[1,6], Ptemp[1,5], Ptemp[2,5],Ptemp[1,10])
     trackFF[t,]<-c(Ptemp[9,6], Ptemp[9,5], Ptemp[3,5],Ptemp[9,10])
-  }
-  
+   }
+   
+   #parallel::stopCluster(cl)
+   
 ####################################################################################################
   
   nsteps<-length(trackP[,1])

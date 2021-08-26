@@ -1,0 +1,5 @@
+memory profiling: GC profiling: line profiling: sample.interval=10000
+#File 1: <expr>
+:1359781:21855844:96773600:10425:"[[.data.frame" "rbind" "rbind" "run_model" 1#2 "profvis" 
+:1397620:21855844:110549712:13448:"[[.data.frame" "rbind" "rbind" "run_model" 1#2 "profvis" 
+:1447802:21858864:123414088:11167:"rbind" "rbind" "run_model" 1#2 "profvis" 

@@ -13,6 +13,8 @@ app_server <- function( input, output, session ) {
 
 devtools::load_all("R/")
   
+#################### NEEDS UPDATED WITH CURRENT FILES ###############################  
+  
 # This function is responsible for loading in the selected file
 # more variation in the scenario
   # hospital - single patient room
@@ -39,6 +41,9 @@ filedata <- reactive({
     }
   })
   
+#################### NEEDS UPDATED WITH CURRENT FILES ###############################  
+
+
 # Generate the input data
 
 # allow more than one to be selected
@@ -133,7 +138,8 @@ modeldata <- reactive({
       df
     }
     
-    ################## ADMINISTRATIVE CONTROLS #################### FILL THESE IN PROPERLY
+    ################## ADMINISTRATIVE CONTROLS #################### 
+  
     if(input$ADMVAR=="Hygiene"){
       df$SuCfomiteprobmin<-0.38
       df$SuCfomiteprobmax<-0.86
@@ -211,8 +217,8 @@ masteroutput <-eventReactive(input$button, {
   baselinedata  <-baselinedata()
   
   # Specify how many iterations
-  RUN<-do.call("rbind", replicate(100, modeldata, simplify = FALSE))
-  RUN2<-do.call("rbind", replicate(100, baselinedata, simplify = FALSE))
+  RUN<-do.call("rbind", replicate(200, modeldata, simplify = FALSE))
+  RUN2<-do.call("rbind", replicate(200, baselinedata, simplify = FALSE))
   RUN3<-rbind(RUN, RUN2)
   
   # Run the function
@@ -248,7 +254,7 @@ output$numberinfectedgraph <- renderPlotly({
   })
 
 # Generate number of infected text
-output$infectedtextbaseline <- renderText({
+output$infectedtextcomparison <- renderText({
  
   masteroutput <- masteroutput()
   masteroutput$numberinfected<-as.numeric(masteroutput$numberinfected)
@@ -258,69 +264,120 @@ output$infectedtextbaseline <- renderText({
     group_by(ID) %>%
     summarise(mediannumberinfected=median(numberinfected, na.rm=T))
   
-  paste("The median number of infected for ",masteroutput$ID[1], "is ", (round(masteroutput$mediannumberinfected[1]*100000,3)), "per 100,000")
   
-})
-
-output$infectedtextcomparison <- renderText({
+  # comparison
+  masteroutput2 <- masteroutput()
+  masteroutput2$numberinfected<-as.numeric(masteroutput2$numberinfected)
+  masteroutput2 <- masteroutput2 %>% select(ID,numberinfected)
   
-  masteroutput <- masteroutput()
-  masteroutput$numberinfected<-as.numeric(masteroutput$numberinfected)
-  masteroutput <- masteroutput %>% select(ID,numberinfected)
-  
-  masteroutput<-masteroutput %>%
+  masteroutput2<-masteroutput2 %>%
     group_by(ID) %>%
     summarise(mediannumberinfected=median(numberinfected, na.rm=T))
   
-  paste("The median number of infected for ",masteroutput$ID[2], "is ", (round(masteroutput$mediannumberinfected[2]*100000,3)), "per 100,000")
+  
+  scenariorisk<-(round(masteroutput$mediannumberinfected[1]*100000,2))
+  
+  scenario2risk<-(round(masteroutput2$mediannumberinfected[2]*100000,2))
+  
+  paste("The median number of infected for ",masteroutput$ID[1], " is ", scenariorisk,
+        "<font color=\"#FF0000\"><b>", scenariorisk , "per 100,000","</b></font>",
+        "and for ",masteroutput2$ID[2], " is ", 
+        "<font color=\"#FF0000\"><b>", scenario2risk , "per 100,000","</b></font>", 
+        " which corresponds to a ","<font color=\"#FF0000\"><b>", round(100-(round(masteroutput$mediannumberinfected[1]*100000,2)/(round(masteroutput2$mediannumberinfected[2]*100000,2))*100),2),"%","</b></font>", " reduction in risk.")
   
 })
 
-# could put percentage change in text?
 
 # Generate relcon plot
 output$relcon <- renderPlot({
-
-    masteroutput <- masteroutput()
   
-    masteroutput<-masteroutput %>% 
-      group_by(ID) %>%
-      select(ID, rFACE, rLUNGNF, rLUNGFF, rSPRAY) %>%
-      mutate_at(., c("rFACE", "rLUNGNF", "rLUNGFF", "rSPRAY"), ~as.numeric(.)) %>%
-      summarise(CONTACT_mean =      mean(rFACE  /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
-                INHALATION_NF_mean = mean(rLUNGNF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
-                INHALATION_FF_mean = mean(rLUNGFF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
-                SPRAY_mean =        mean(rSPRAY /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100))
-    
-    # to get 100%
-    # https://stackoverflow.com/questions/13483430/how-to-make-rounded-percentages-add-up-to-100
-    
-    
-    masteroutput <- tidyr::pivot_longer(masteroutput,cols=CONTACT_mean :SPRAY_mean) 
-    
-    library(hrbrthemes)
-    library(waffle)
-    library(ggplot2)
-    library(dplyr)
-      masteroutput %>%
-      ggplot(aes(fill = name, values = value)) +
-      expand_limits(x=c(0,0), y=c(0,0)) +
-      coord_equal() +
-      labs(fill = NULL, colour = NULL) +
-      theme_ipsum_rc(grid="") +
-      theme_enhance_waffle() -> waffleplot
-    
-    #group.colors <- c(Contact = "#E69F00", Spray = "#0072B2", `NF Inhalation`= "#CC79A7", `FF Inhalation`="#d9c7d1")
-    
-    
-    waffleplot +
-      geom_waffle(
-        color = "white", size = 0.33
-      ) +
-      facet_wrap(~ID) +
-      theme(strip.text.x = element_text(hjust = 0.5))
+  masteroutput <- masteroutput()
+  
+  masteroutput<-masteroutput %>% 
+    group_by(ID) %>%
+    select(ID, rFACE, rLUNGNF, rLUNGFF, rSPRAY) %>%
+    mutate_at(., c("rFACE", "rLUNGNF", "rLUNGFF", "rSPRAY"), ~as.numeric(.)) %>%
+    summarise(CONTACT_mean =      mean(rFACE  /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
+              INHALATION_NF_mean = mean(rLUNGNF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
+              INHALATION_FF_mean = mean(rLUNGFF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
+              SPRAY_mean =        mean(rSPRAY /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100))
+  
+  # to get 100%
+  # https://stackoverflow.com/questions/13483430/how-to-make-rounded-percentages-add-up-to-100
+  
+  
+  masteroutput <- tidyr::pivot_longer(masteroutput,cols=CONTACT_mean :SPRAY_mean) 
+  
+  library(hrbrthemes)
+  library(waffle)
+  library(ggplot2)
+  library(dplyr)
+  masteroutput %>%
+    ggplot(aes(fill = name, values = value)) +
+    expand_limits(x=c(0,0), y=c(0,0)) +
+    coord_equal() +
+    labs(fill = NULL, colour = NULL) +
+    theme_ipsum_rc(grid="") +
+    theme_enhance_waffle() -> waffleplot
+  
+  #group.colors <- c(Contact = "#E69F00", Spray = "#0072B2", `NF Inhalation`= "#CC79A7", `FF Inhalation`="#d9c7d1")
+  
+  
+  waffleplot +
+    geom_waffle(
+      color = "white", size = 0.33
+    ) +
+    facet_wrap(~ID) +
+    theme(strip.text.x = element_text(hjust = 0.5))
+  
+})
 
-  })
+# Generate rel contr text
+output$infectedrelcontext<- renderText({
+  
+  masteroutput <- masteroutput()
+  
+  masteroutput<-masteroutput %>% 
+    group_by(ID) %>%
+    select(ID, rFACE, rLUNGNF, rLUNGFF, rSPRAY) %>%
+    mutate_at(., c("rFACE", "rLUNGNF", "rLUNGFF", "rSPRAY"), ~as.numeric(.)) %>%
+    summarise(CONTACT_mean =      mean(rFACE  /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
+              INHALATION_NF_mean = mean(rLUNGNF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
+              INHALATION_FF_mean = mean(rLUNGFF/(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100),
+              SPRAY_mean =        mean(rSPRAY /(rLUNGNF+rLUNGFF+rFACE+rSPRAY)*100))
+  
+  masteroutput<-masteroutput %>% tidyr::pivot_longer(cols=CONTACT_mean :SPRAY_mean, names_to="route", values_to="risk")
+  masteroutput2<-masteroutput[1:4,1:3]
+  
+  domroute<-with(masteroutput2, route[which.max(risk)])
+  domroute<-gsub("_mean", "",domroute)
+  domperc<-round(max(masteroutput2$risk),0)
+  scenario2<-with(masteroutput2, ID[which.max(risk)])
+  
+  
+  masteroutput3<-masteroutput[5:8,1:3]
+  domroute2<-with(masteroutput3, route[which.max(risk)])
+  domroute2<-gsub("_mean", "",domroute2)
+  domperc2<-round(max(masteroutput3$risk),0)
+  scenario3<-with(masteroutput3, ID[which.max(risk)])
+  
+  
+  paste0("The dominant route in ", scenario2, " is ",
+         "<font color=\"#FF0000\"><b>", domroute,"</b></font>", 
+         " contributing ", 
+         "<font color=\"#FF0000\"><b>",domperc,"%","</b></font>",
+         " to the total risk",
+         
+         ". The dominant route in ", scenario3, " is ",
+         "<font color=\"#FF0000\"><b>", domroute2,"%","</b></font>", 
+         " contributing ", 
+         "<font color=\"#FF0000\"><b>",domperc2,"%","</b></font>",
+         " to the total risk"
+         )
+
+})
+
+
 
 
   

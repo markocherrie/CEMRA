@@ -20,6 +20,10 @@ golem::run_dev()
 
 CEMRA::run_model("Test", 10)
 
+## To add a package
+1. Run print(sessionInfo()) to get package number
+2. Add that to the DESCRIPTION file
+
 ## To change an input parameter
 1. Go to the covidinfectioncalculator.R and modify the function arguments and the function code
 2. Load the "/runs" file and modify 
@@ -38,4 +42,5 @@ Q6. Re-do scenario files so that they are more specific
 Q7. Always keep the same colours for the waffle plot
 Q8. Add in starting concentrations in air, surfaces etc
 Q9. Inormation - how to use tab - describe scenario files
+Q10. Put in download button to get parameters
 

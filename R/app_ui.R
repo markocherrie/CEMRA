@@ -22,8 +22,8 @@ app_ui <- function(request) {
       headerPanel(
         fluidRow(
           column(11, h1("Covid Exposure Model and Risk App (CEMRA)", 
-                        style = "'font-weight': bold; 'font-size': 39px")),
-          column(1, offset=-1, tags$img(src = "img/iomlogo.png"))
+                        style = "'font-weight': bold; 'font-size': 39px"))
+          #column(1, offset=-1, tags$img(src = "img/iomlogo.png"))
         )
         , windowTitle = "Covid Exposure Model and Risk App (CEMRA)"),
       
@@ -38,8 +38,10 @@ app_ui <- function(request) {
           selectInput("SETTING", "Preloaded Scenario:",
                       list("Hospital" = "Hospital",
                            "Office" = "Office",
+                           "Office (meeting room)"="Office (meeting room)",
                            "Restaurant"="Restaurant",
-                           "Small Retailer"="Small Retailer"
+                           "Small Retailer"="Small Retailer",
+                           "Communal toilet"="Communal toilet"
                       )),
           selectInput("INFECTED", "Infected status:",
                       list("Extremely high" = "EHI",
@@ -76,9 +78,10 @@ app_ui <- function(request) {
         mainPanel(
           tabsetPanel(
             tabPanel("Information", includeHTML("data/docs/info.html")),
+            tabPanel("How to use", includeHTML("data/docs/howtouse.html")),
             tabPanel("Parameters", tableOutput("params")),
-            tabPanel("Number infected", plotlyOutput("numberinfectedgraph")%>% withSpinner(color="#428bca"), textOutput("infectedtextbaseline"), textOutput("infectedtextcomparison")),
-            tabPanel("Route of transmission", plotOutput("relcon", width = "100%")%>% withSpinner(color="#428bca"))
+            tabPanel("Number infected", plotlyOutput("numberinfectedgraph")%>% withSpinner(color="#428bca"), htmlOutput("infectedtextcomparison")),
+            tabPanel("Route of transmission", plotOutput("relcon", width = "100%")%>% withSpinner(color="#428bca"), htmlOutput("infectedrelcontext"))
           )
         )
       )

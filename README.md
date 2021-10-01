@@ -34,7 +34,6 @@ CEMRA::run_model("Test", 10)
 Q1. Currently 1000 runs takes 94 seconds which is too slow for the app
 A1. Currently 1000 runs takes 33 seconds which is too slow for the app (update)
 
-Q2. Need to update fomite controls -currently not working
 Q3. Need to have file of parameters from comparison model saved to output
 Q4. Need to get IOM image working
 Q5. Need to re-write information html
@@ -43,4 +42,4 @@ Q7. Always keep the same colours for the waffle plot
 Q8. Add in starting concentrations in air, surfaces etc
 Q9. Inormation - how to use tab - describe scenario files
 Q10. Put in download button to get parameters
-
+Q11. route to 100 algorithm - fix

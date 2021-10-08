@@ -209,6 +209,18 @@ paramdata <- reactive({
   df2 <- subset(df2, select = -c(ID) )
 })
 
+paramdata2 <- reactive({
+  df  <- modeldata()
+})
+
+output$downloadData <- downloadHandler(
+  filename = function() {
+    paste("CEMRAparams.csv", sep = "")
+  },
+  content = function(file) {
+    write.csv(paramdata2(), file, row.names = FALSE)
+  }
+)
 
 # run the model on the "button"
 
@@ -286,9 +298,9 @@ output$infectedtextcomparison <- renderText({
   
   
   paste("The median number of infected for ",masteroutput$ID[1], " is ",
-        "<font color=\"#FF0000\"><b>", scenariorisk , "per 100,000","</b></font>",
+        "<font color=\"#FF0000\"><b>", scenariorisk , "per 100,000 activities","</b></font>",
         "and for ",masteroutput2$ID[2], " is ", 
-        "<font color=\"#FF0000\"><b>", scenario2risk , "per 100,000","</b></font>", 
+        "<font color=\"#FF0000\"><b>", scenario2risk , "per 100,000 activities","</b></font>", 
         " which corresponds to a ","<font color=\"#FF0000\"><b>", changeperc,"%","</b></font>"," ", changetext," in risk.")
   
 })
@@ -310,9 +322,41 @@ output$relcon <- renderPlot({
   
   # to get 100%
   # https://stackoverflow.com/questions/13483430/how-to-make-rounded-percentages-add-up-to-100
-  
-  
+  error_gen<-function(actual, rounded){
+    divisor<-ifelse(sqrt(actual)<1, 1, actual)
+    results<-(rounded-actual)^2/divisor
+    return(results)
+  }
+  round_to_100<-function(percents){
+    n=length(percents)
+    rounded<-sapply(percents, as.integer)
+    
+    if(sum(rounded)==100){
+      return(rounded)
+    }else{
+    up_count<-100-sum(rounded)
+    
+    errors<-NULL
+    for(i in 1:n){
+      d<-mapply(error_gen, percents[i], rounded[i]+1) - mapply(error_gen, percents[i], rounded[i])
+      errors<-c(errors, d)
+    }
+    rank<-sort(errors)
+  ################################ THIS BIT NOT WORKING #################
+    for (i in 1:up_count){
+      rounded[rank[i]]<- rounded[rank[i]] + 1
+    return(rounded)
+  ################################ THIS BIT NOT WORKING #################
+      
+    }
+    }
+  }
+
   masteroutput <- tidyr::pivot_longer(masteroutput,cols=CONTACT_mean :SPRAY_mean) 
+  
+  # make sure this works
+  masteroutput$value<-round_to_100(masteroutput$value)
+  
   
   library(hrbrthemes)
   library(waffle)

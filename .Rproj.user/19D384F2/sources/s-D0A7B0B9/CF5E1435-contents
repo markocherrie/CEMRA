@@ -71,6 +71,7 @@ app_ui <- function(request) {
                            "Worksafe AirHood"="Airhood"
                       )),
           actionButton("button", "Model"),
+          downloadButton("downloadData", "Download parameters"),
           
           
           

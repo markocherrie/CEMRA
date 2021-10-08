@@ -39,17 +39,17 @@ round_to_100<-function(){
 }
 
 #################################
-def round_to_100(percents):
-  if not isclose(sum(percents), 100):
-  raise ValueError
-n = len(percents)
-rounded = [int(x) for x in percents]
-up_count = 100 - sum(rounded)
-errors = [(error_gen(percents[i], rounded[i] + 1) - error_gen(percents[i], rounded[i]), i) for i in range(n)]
-rank = sorted(errors)
-for i in range(up_count):
-  rounded[rank[i][1]] += 1
-return rounded
+#def round_to_100(percents):
+#  if not isclose(sum(percents), 100):
+#  raise ValueError
+#n = len(percents)
+#rounded = [int(x) for x in percents]
+#up_count = 100 - sum(rounded)
+#errors = [(error_gen(percents[i], rounded[i] + 1) - error_gen(percents[i], rounded[i]), i) for i in range(n)]
+#rank = sorted(errors)
+#for i in range(up_count):
+#  rounded[rank[i][1]] += 1
+#return rounded
 
 
 ###############################

@@ -247,7 +247,7 @@ output$numberinfectedgraph <- renderPlotly({
         axis.ticks = element_blank())+
       theme(text = element_text(size=12))
     d<-d + scale_y_continuous(trans='log10')+
-      ylab("Risk per single patient care activity")
+      ylab("Risk per single activity")
     library(plotly)
     d<-ggplotly(d)
     
@@ -278,12 +278,18 @@ output$infectedtextcomparison <- renderText({
   scenariorisk<-(round(masteroutput$mediannumberinfected[1]*100000,2))
   
   scenario2risk<-(round(masteroutput2$mediannumberinfected[2]*100000,2))
+  changeperc<-round(100-(round(masteroutput$mediannumberinfected[1]*100000,2)/(round(masteroutput2$mediannumberinfected[2]*100000,2))*100),2)
+  changetext<-NA
+  changetext[changeperc>0]<-"increase"
+  changetext[changeperc==0]<-"difference"
+  changetext[changeperc<0]<-"reduction"
   
-  paste("The median number of infected for ",masteroutput$ID[1], " is ", scenariorisk,
+  
+  paste("The median number of infected for ",masteroutput$ID[1], " is ",
         "<font color=\"#FF0000\"><b>", scenariorisk , "per 100,000","</b></font>",
         "and for ",masteroutput2$ID[2], " is ", 
         "<font color=\"#FF0000\"><b>", scenario2risk , "per 100,000","</b></font>", 
-        " which corresponds to a ","<font color=\"#FF0000\"><b>", round(100-(round(masteroutput$mediannumberinfected[1]*100000,2)/(round(masteroutput2$mediannumberinfected[2]*100000,2))*100),2),"%","</b></font>", " reduction in risk.")
+        " which corresponds to a ","<font color=\"#FF0000\"><b>", changeperc,"%","</b></font>"," ", changetext," in risk.")
   
 })
 

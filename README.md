@@ -29,12 +29,10 @@ CEMRA::run_model("Test", 10)
 2. Load the "/runs" file and modify 
 3. Load the metadata.csv and modify and save as an RData file
 
-
 ## Issues to fix
 Q1. Currently 1000 runs takes 94 seconds which is too slow for the app
 A1. Currently 1000 runs takes 33 seconds which is too slow for the app (update)
 
-Q3. Need to have file of parameters from comparison model saved to output
 Q4. Need to get IOM image working
 Q5. Need to re-write information html
 Q6. Re-do scenario files so that they are more specific

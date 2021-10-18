@@ -107,6 +107,14 @@ modeldata <- reactive({
         df$InfEairTalkSmean<-1
         df$ID<-paste0(df$ID, "_ELI")
         df
+      }else if(input$INFECTED=="Chen"){
+        df$InfsalivaChenscale<-7.01
+        df$InfsalivaChenshape<-3.47
+        df$Infsalivastudy<-"Chen"
+        df$Infcoughrateperhourmax<-40
+        df$Infcoughrateperhourmin<-30
+        df$Infcoughrateperhourmode<-35
+        df
       }else{
         df
       }

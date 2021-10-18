@@ -50,7 +50,8 @@ app_ui <- function(request) {
                            "Moderate" = "MI",
                            "Low"="LI",
                            "Very low" = "VLI",
-                           "Extremely low"="ELI"
+                           "Extremely low"="ELI",
+                           "Chen et al., 2021; (DOI:10.7554/eLife.65774)"= "Chen"
                       ), selected="MI"),
           selectInput("ENGVAR", "Engineering controls:",
                       list("None" = "None",

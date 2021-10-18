@@ -1,24 +1,24 @@
 {
-    "id": "FE0EB531",
-    "path": "~/GitHub/CEMRA/data/docs/howtouse.html",
-    "project_path": "data/docs/howtouse.html",
+    "id": "86CBFA69",
+    "path": "~/GitHub/CEMRA/data/docs/info.html",
+    "project_path": "data/docs/info.html",
     "type": "html",
     "hash": "0",
     "contents": "",
     "dirty": false,
-    "created": 1633099299390.0,
+    "created": 1634568949082.0,
     "source_on_save": false,
-    "relative_order": 2,
+    "relative_order": 3,
     "properties": {
-        "cursorPosition": "15,37",
+        "cursorPosition": "20,16",
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1634570603,
+    "lastKnownWriteTime": 1634570534,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1634570603988,
+    "last_content_update": 1634570534087,
     "read_only": false,
     "read_only_alternatives": []
 }

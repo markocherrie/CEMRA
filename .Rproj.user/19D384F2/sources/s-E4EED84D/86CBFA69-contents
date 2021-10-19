@@ -2,23 +2,36 @@
 <html>
 <br>
 <p><strong> Modelling covid-19 risk</strong></p>
-
+There are many ways to model covid-19 transmission. 
 
 
 <p><strong>Transmission routes</strong></p>
-
 COVID-19 can be transmitted between individuals through three routes: inhalation of aerosols, deposition of droplets on the facial mucous membranes and contact with infected surfaces transfered to the mucous membranes via hand or tool. 
+
 <p><strong>Dose Response</strong></p>
+The dose response-function is derived from an exponential function fitted to pooled data about <strong>SARS CoV</strong> infectivity in mice, The probability of infection is given as: P(infection) = 1 – exp(-d/410), where d is the dose. 
+
+
+<p><strong>Infectiousness</strong></p>
+Infectiousness is made from three parameters: the concentration of SARS-COV-2 in saliva, the rate of virus emission in exhaled breath and the frequency of coughing.  
+
+For the concentration of SARS-COV-2 in saliva we use a study by Chen et al., 2021. This a weibull distribution with a shape factor of 3.47 and a scale factor of 7.01 for the log10 RNA/ml. 
+
+For the rate of virus emission in exaled breath we used three studies. The first study of 17 individuals with human seasonal coronavirus (not SARS-CoV-2) found a minimum of 10 gene copies per 30 minutes (Leung). The second study in 9 ready-to-discharge/recovering patients found levels between 3.675 x 10^4 to 3.885 x 10^4  RNA copies per 30 minutes (Zhou). The third study estimated that SARS-Cov-2 emission is 3 x 105 RNA copies per 30 minutes, from 35 patients with COVID-19 using BioScreen device (Ma). 
+To approximate 
+
+
+
+We scale the infectious parameters linearly, using the shape of the distribution in previous studies. 
 
 
 
 <p><strong> Exposure Model </strong></p>
-
 <p>The original model was developed in 'Relative contributions of transmission routes for
 COVID-19 among healthcare personnel providing
 patient care' <a href="https://www.ncbi.nlm.nih.gov/research/coronavirus/publication/32643585" target="_blank">(Jones, 2020)</a>.
 
-CEMRA uses a compartmental model of nine states within a room to estimate virus transport and fate for fomite and inhalation transmission, implemented using a discrete-time Markov chain. Droplet transmission from coughing is based on respiratory droplet size distribution, extrapolated to the expiratory volume, with a probability of impacting the face in proportion to the surface area of the mucous membranes. 
+CEMRA uses a compartmental model of nine states within a room to estimate virus transport and fate for contact and inhalation transmission, implemented using a discrete-time Markov chain. Droplet transmission from coughing is based on respiratory droplet size distribution, extrapolated to the expiratory volume, with a probability of impacting the face in proportion to the surface area of the mucous membranes. 
 
 </p>
 

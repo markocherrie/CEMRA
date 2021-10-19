@@ -36,9 +36,11 @@ app_ui <- function(request) {
                       "text/comma-separated-values,text/plain",
                       ".csv")),
           selectInput("SETTING", "Preloaded Scenario:",
-                      list("Hospital" = "Hospital",
-                           "Office" = "Office",
-                           "Office (meeting room)"="Office (meeting room)",
+                      list("Hospital (Single Patient room)" = "Hospital_singlepatient",
+                           "Hospital (Two Patient room)"= "Hospital_twopatient",
+                           "Hospital (Treatment room)" = "Hospital_singlepatienttreatment",
+                           "Office (Open plan)" = "Office (Open plan)",
+                           "Office (Meeting room)"="Office (meeting room)",
                            "Restaurant"="Restaurant",
                            "Small Retailer"="Small Retailer",
                            "Communal toilet"="Communal toilet"
@@ -51,7 +53,7 @@ app_ui <- function(request) {
                            "Low"="LI",
                            "Very low" = "VLI",
                            "Extremely low"="ELI",
-                           "Chen et al., 2021; (DOI:10.7554/eLife.65774)"= "Chen"
+                           "Unknown - Chen et al., 2021 (DOI:10.7554/eLife.65774)"= "Chen"
                       ), selected="MI"),
           selectInput("ENGVAR", "Engineering controls:",
                       list("None" = "None",
@@ -82,7 +84,7 @@ app_ui <- function(request) {
             tabPanel("Information", includeHTML("data/docs/info.html")),
             tabPanel("How to use", includeHTML("data/docs/howtouse.html")),
             tabPanel("Parameters", tableOutput("params")),
-            tabPanel("Number infected", plotlyOutput("numberinfectedgraph")%>% withSpinner(color="#428bca"), htmlOutput("infectedtextcomparison")),
+            tabPanel("Number infected", plotOutput("numberinfectedgraph")%>% withSpinner(color="#428bca"), htmlOutput("infectedtextcomparison")),
             tabPanel("Route of transmission", plotOutput("relcon", width = "100%")%>% withSpinner(color="#428bca"), htmlOutput("infectedrelcontext"))
           )
         )

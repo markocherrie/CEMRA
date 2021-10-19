@@ -19,14 +19,20 @@ devtools::load_all("R/")
 # more variation in the scenario
   # hospital - single patient room
   # hospital - multi patient room
-  # hosptial - 
+  # hospital - 
   
 filedata <- reactive({
     if (!is.null(input$file1)) {
       infile<-input$file1
       read.csv(infile$datapath)
-    } else if(is.null(input$file1) & input$SETTING=="Hospital"){
-      infile<-"data/runs/Hospital.csv"
+    } else if(is.null(input$file1) & input$SETTING=="Hospital_singlepatient"){
+      infile<-"data/runs/Hospital_singlepatient.csv"
+      read.csv(infile)
+    } else if(is.null(input$file1) & input$SETTING=="Hospital_twopatient"){
+      infile<-"data/runs/Hospital_twopatient.csv"
+      read.csv(infile)
+    } else if(is.null(input$file1) & input$SETTING=="Hospital_singlepatienttreatment"){
+      infile<-"data/runs/Hospital_singlepatienttreatment.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Office"){
       infile<-"data/runs/Office.csv"
@@ -57,7 +63,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmode<-65
         df$InfsalivaChenscale<-7
         df$InfEairTalkSmean<-7
-        df$ID<-paste0(df$ID, "_EHI")
+        df$ID<-paste0(df$ID, "\n+ Extremely high infectious")
         df
       } else if(input$INFECTED=="VHI"){
         df$Infcoughrateperhourmax<-60
@@ -65,7 +71,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmode<-55
         df$InfsalivaChenscale<-6
         df$InfEairTalkSmean<-6
-        df$ID<-paste0(df$ID, "_VHI")
+        df$ID<-paste0(df$ID, "\n+ Very high infectious")
         df
       } else if(input$INFECTED=="HI"){
         df$Infcoughrateperhourmax<-50
@@ -73,7 +79,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmode<-45
         df$InfsalivaChenscale<-5
         df$InfEairTalkSmean<-5
-        df$ID<-paste0(df$ID, "_HI")
+        df$ID<-paste0(df$ID, "\n+ High infectious")
         df
       }else if(input$INFECTED=="MI"){
         df$Infcoughrateperhourmax<-40
@@ -81,7 +87,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmode<-35
         df$InfsalivaChenscale<-4
         df$InfEairTalkSmean<-4
-        df$ID<-paste0(df$ID, "_MI")
+        df$ID<-paste0(df$ID, "\n+ Moderate infectious")
         df
       } else if(input$INFECTED=="LI"){
         df$Infcoughrateperhourmax<-30
@@ -89,7 +95,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmode<-25
         df$InfsalivaChenscale<-3
         df$InfEairTalkSmean<-3
-        df$ID<-paste0(df$ID, "_LI")
+        df$ID<-paste0(df$ID, "\n+ Low infectious")
         df
       } else if(input$INFECTED=="VLI"){
         df$Infcoughrateperhourmax<-20
@@ -97,7 +103,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmode<-15
         df$InfsalivaChenscale<-2
         df$InfEairTalkSmean<-2
-        df$ID<-paste0(df$ID, "_VLI")
+        df$ID<-paste0(df$ID, "\n+ Very low infectious+")
         df
       }else if(input$INFECTED=="ELI"){
         df$Infcoughrateperhourmax<-10
@@ -105,15 +111,16 @@ modeldata <- reactive({
         df$Infcoughrateperhourmode<-5
         df$InfsalivaChenscale<-1
         df$InfEairTalkSmean<-1
-        df$ID<-paste0(df$ID, "_ELI")
+        df$ID<-paste0(df$ID, "\n+ Extremely low infectious")
         df
       }else if(input$INFECTED=="Chen"){
         df$InfsalivaChenscale<-7.01
         df$InfsalivaChenshape<-3.47
         df$Infsalivastudy<-"Chen"
-        df$Infcoughrateperhourmax<-40
-        df$Infcoughrateperhourmin<-30
-        df$Infcoughrateperhourmode<-35
+        df$Infcoughrateperhourmax<-60
+        df$Infcoughrateperhourmin<-5
+        df$Infcoughrateperhourmode<-30
+        df$ID<-paste0(df$ID, "\n+ Unknown infectious")
         df
       }else{
         df
@@ -125,7 +132,7 @@ modeldata <- reactive({
       df$RoomUVCmaxflowrate<-450
       df$RoomUVCeffmin<-0.9
       df$RoomUVCeffmax<-1
-      df$ID<-paste0(df$ID, "_UVC")
+      df$ID<-paste0(df$ID, "\n+ UVC air purification")
       df
     } else if (input$ENGVAR=="Freshair"){
       df$Roomwindowsopen<-"Y"
@@ -134,13 +141,13 @@ modeldata <- reactive({
       df$RoomsoaW<-0.8
       df$RoomsoaH<-1
       df$RoomsoaP<-0.1
-      df$ID<-paste0(df$ID, "_Freshair")
+      df$ID<-paste0(df$ID, "\n+ Fresh air from open window")
       df
     } else if (input$ENGVAR=="VentHead"){
       df$InfCexhaleprobmin<-0.06
       df$InfCexhaleprobmax<-0.27
       df$InfCexhaleprobmode<-0.17
-      df$ID<-paste0(df$ID, "_VentHead")
+      df$ID<-paste0(df$ID, "\n+ Ventilated Headboard")
       df
     } else{
       df
@@ -152,13 +159,13 @@ modeldata <- reactive({
       df$SuCfomiteprobmin<-0.38
       df$SuCfomiteprobmax<-0.86
       df$SuCfomiteprobmode<-0.583
-      df$ID<-paste0(df$ID, "_SurfaceDisinfection")
+      df$ID<-paste0(df$ID, "\n + Surface Disinfection")
       df
     } else if(input$ADMVAR=="Hygiene2"){
       df$SuCfomiteprobmin<-0
       df$SuCfomiteprobmax<-0.47
       df$SuCfomiteprobmode<-0.146
-      df$ID<-paste0(df$ID, "_SurfaceDisinfectionandhandhygiene")
+      df$ID<-paste0(df$ID, "\n+ SurfaceDisinfection and hand hygiene")
       df
     }
   
@@ -169,19 +176,19 @@ modeldata <- reactive({
       df$SuCinhaleprobmin<-0.2
       df$SuCinhaleprobmax<-0.65
       df$SuCinhaleprobmode<-0.35
-      df$ID<-paste0(df$ID, "_SurgicalMask")
+      df$ID<-paste0(df$ID, "\n+ Surgical Mask")
       df
     } else if(input$PPEVAR=="FFP2"){
       df$SuCinhaleprobmin<-0.01
       df$SuCinhaleprobmax<-0.35
       df$SuCinhaleprobmode<-0.1
-      df$ID<-paste0(df$ID, "_FFP2")
+      df$ID<-paste0(df$ID, "\n+ FFP2")
       df  
     } else if(input$PPEVAR=="FFP3"){
       df$SuCinhaleprobmin<-0.005
       df$SuCinhaleprobmax<-0.3
       df$SuCinhaleprobmode<-0.05
-      df$ID<-paste0(df$ID, "_FFP3")
+      df$ID<-paste0(df$ID, "\n+ FFP3")
       df  
     } else if(input$PPEVAR=="AirHood"){
       df$SuCinhaleprobmin<-0.0003
@@ -190,7 +197,7 @@ modeldata <- reactive({
       df$SuChandtouchmin<-0	
       df$SuChandtouchmax<-0
       df$SuChandtouchmode<-0
-      df$ID<-paste0(df$ID, "_Airhood")
+      df$ID<-paste0(df$ID, "\n+ Airhood")
       df
     } else{
       df
@@ -237,8 +244,8 @@ masteroutput <-eventReactive(input$button, {
   baselinedata  <-baselinedata()
   
   # Specify how many iterations
-  RUN<-do.call("rbind", replicate(200, modeldata, simplify = FALSE))
-  RUN2<-do.call("rbind", replicate(200, baselinedata, simplify = FALSE))
+  RUN<-do.call("rbind", replicate(25, modeldata, simplify = FALSE))
+  RUN2<-do.call("rbind", replicate(25, baselinedata, simplify = FALSE))
   RUN3<-rbind(RUN, RUN2)
   
   # Run the function
@@ -251,7 +258,7 @@ output$params <- renderTable({
   })
 
 # Generate number of infected plot
-output$numberinfectedgraph <- renderPlotly({
+output$numberinfectedgraph <- renderPlot({
 
     masteroutput <- masteroutput()
     masteroutput$numberinfected<-as.numeric(masteroutput$numberinfected)
@@ -267,10 +274,8 @@ output$numberinfectedgraph <- renderPlotly({
         axis.ticks = element_blank())+
       theme(text = element_text(size=12))
     d<-d + scale_y_continuous(trans='log10')+
-      ylab("Risk per single activity")
-    library(plotly)
-    d<-ggplotly(d)
-    
+      ylab("Log risk per single activity")
+    d
   })
 
 # Generate number of infected text
@@ -412,7 +417,7 @@ output$infectedrelcontext<- renderText({
          "<font color=\"#FF0000\"><b>",domperc,"%","</b></font>",
          " to the total risk",
          
-         ". The dominant route in ", scenario3, " is ",
+         ". \nThe dominant route in ", scenario3, " is ",
          "<font color=\"#FF0000\"><b>", domroute2,"</b></font>",
          " contributing ", 
          "<font color=\"#FF0000\"><b>",domperc2,"%","</b></font>",

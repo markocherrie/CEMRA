@@ -32,6 +32,7 @@ Q6. Re-do scenario files so that they are more specific
 Q7. Always keep the same colours for the waffle plot
 Q8. Add in starting concentrations in air, surfaces etc
 Q9. Inormation - how to use tab - describe scenario files
-Q10. Put in download button to get parameters
-Q11. route to 100 algorithm - fix
 Q12. Amend Infactivity metadata
+Q13. Change iterations to 200
+Q14. y axis not visible for the infected graph
+Q15. Always make the route colours the same... NF always red etc..

@@ -99,9 +99,9 @@ app_ui <- function(request) {
         mainPanel(
           tabsetPanel(
             tabPanel("Model", includeHTML("data/docs/info.html")),
-            tabPanel("Scenarios", includeHTML("data/docs/scenarios.html")),
-            tabPanel("Viral load and shedding", includeHTML("data/docs/infectiousness.html")),
-            tabPanel("Controls", includeHTML("data/docs/controls.html")),
+            #tabPanel("Scenarios", includeHTML("data/docs/scenarios.html")),
+            #tabPanel("Viral load and shedding", includeHTML("data/docs/infectiousness.html")),
+            #tabPanel("Controls", includeHTML("data/docs/controls.html")),
             tabPanel("How to use", includeHTML("data/docs/howtouse.html")),
             tabPanel("Parameters", tableOutput("params")),
             tabPanel("Risk of Infection", plotOutput("numberinfectedgraph")%>% withSpinner(color="#428bca"), htmlOutput("infectedtextcomparison")),

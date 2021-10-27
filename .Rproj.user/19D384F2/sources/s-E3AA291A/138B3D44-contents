@@ -351,9 +351,9 @@ output$infectedtextcomparison <- renderText({
   changetext[changeperc<0]<-"reduction"
   
   
-  paste("The median number of infected people for the scenario:",masteroutput$ID[1], " , is ",
+  paste("The median number of infected people for the scenario:",masteroutput$ID[1], ", is ",
         "<font color=\"#FF0000\"><b>", scenariorisk , "per 100,000 exposure events","</b></font>",
-        "and for scenario:",masteroutput2$ID[2], " , is ", 
+        "and for scenario:",masteroutput2$ID[2],", is ", 
         "<font color=\"#FF0000\"><b>", scenario2risk , "per 100,000 exposure events","</b></font>")
 })
 

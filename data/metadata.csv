@@ -25,64 +25,65 @@ ID,Parameter,Units,Description,Distribution,Reference
 24,RoomNFh,m,Near field zone height,-,Assumed
 25,RoomNFd,m,Near field zone depth,-,Assumed
 26,Infected,Number [1:4],Number of Infected individuals,-,-
-27,Infcoughrateperhourmin,h-1,Lower limit of the the number of times the infected individual coughs per hour,Triangle,"(Sunger et al., 2013; Scheff et al., 2000)"
-28,Infcoughrateperhourmax,h-1,Upper limit of the the number of times the infected individual coughs per hour,Triangle,"(Sunger et al., 2013; Scheff et al., 2000)"
-29,Infcoughrateperhourmode,h-1,Mode of the the number of times the infected individual coughs per hour,Triangle,"(Sunger et al., 2013; Scheff et al., 2000)"
-30,InfCsprayprobmin,"Probability [0,1]",Lower limit of control placed on the infected person's droplet spray emission,Triangle,-
-31,InfCsprayprobmax,"Probability [0,1]",Upper limit of control placed on the infected person's droplet spray emission,Triangle,-
-32,InfCsprayprobmode,"Probability [0,1]",Mode of control placed on the infected person's droplet spray emission,Triangle,-
-33,InfCexhaleprobmin,"Probability [0,1]",Lower limit of control placed on the infected person's droplet spray emission,Triangle,-
-34,InfCexhaleprobmax,"Probability [0,1]",Upper limit of control placed on the infected person's droplet spray emission,Triangle,-
-35,InfCexhaleprobmode,"Probability [0,1]",Mode of control placed on the infected person's droplet spray emission,Triangle,-
-36,Infsurfaces,cm2,Area of surfaces in each zone,-,Assumed
-37,Infactivity,NA,Main behaviour of the infected person ,-,"Buonnano et al. (2020a, b) "
-38,Infsalivastudy,"String [""Chen"", ""Iwasaki""]",Name of study that the SARS-CoV-2 concentration in saliva is derived from,-,-
-39,InfsalivaChenshape,Log10 gene copies/ml,Shape parameter for SARS-CoV-2 concentration in saliva,Weibull,"(Iwasaki et al., 2020)"
-40,InfsalivaChenscale,Log10 gene copies/ml,Scale parameter for SARS-CoV-2 concentration in saliva,Weibull,"(Iwasaki et al., 2020)"
-41,InfsalivaIwasakimin,Log10 gene copies/ml,Lower limit of SARS-CoV-2 concentration in saliva,Uniform,"(Chen et al., 2020)"
-42,InfsalivaIwasakimax,Log10 gene copies/ml,Upper limit of SARS-CoV-2 concentration in saliva,Uniform,"(Chen et al., 2020)"
-43,InfEairTalkSmean,min-1,Virus emitted gene copies per minute with breathing/talking,Log Normal ,"(Leung et al., 2020, Zhou et al., 2021, Ma et al., 2020)"
-44,InfEairTalkSsd,min-1,Virus emitted gene copies per minute with breathing/talking,Log Normal ,"(Leung et al., 2020, Zhou et al., 2021, Ma et al., 2020)"
-45,Sufinger,cm2,Surface area of fingertips,-,Assumed
-46,Suface,cm2,Area of nose and mouth,-,Assumed
-47,Sueye,cm2,Area of eyes,-,Assumed
-48,SuFFtimemin,Percentage ,Percentage of time that the susceptible spent in the far field (minimum in 10% steps),-,CSO study
-49,SuFFtimemax,Percentage ,Percentage of time that the susceptible spent in the far field (maximum in 10% steps),-,CSO study
-50,SuTmaxa,Mins,Lower limit of time spent in the room,Triangle,"(Phan et al., 2019)"
-51,SuTmaxb,Mins,Upper limit of time spent in the room,Triangle,"(Phan et al., 2019)"
-52,SuTmaxc,Mins,Mode of time spent in the room,Triangle,"(Phan et al., 2019)"
-53,INACTIVaira,h-1,Lower limit of virus inactivation in air,Triangle,van Doremalen et al. (2020)
-54,INACTIVairb,h-1,Upper limit of virus inactivation in air,Triangle,van Doremalen et al. (2020)
-55,INACTIVairc,h-1,Mode of virus inactivation in air,Triangle,van Doremalen et al. (2020)
-56,INACTIVsurfacea,h-1,Lower limit of virus inactivation on surfaces ,Triangle,van Doremalen et al. (2020)
-57,INACTIVsurfaceb,h-1,Upper limit of virus inactivation on surfaces ,Triangle,van Doremalen et al. (2020)
-58,INACTIVsurfacec,h-1,Mode of virus inactivation on surfaces ,Triangle,van Doremalen et al. (2020)
-59,INACTIVskinmean,h-1,Mean of virus inactivation on skin ,Normal,van Doremalen et al. (2020)
-60,INACTIVskinsd,h-1,Standard deviation of virus inactivation on skin,Normal,van Doremalen et al. (2020)
-61,TRANSsurface.skinshape,"Probability [0,1]",Shape parameter for virus transfer efficiency upon contact ,Wiebull,Julian et al. (2010)
-62,TRANSsurface.skinscale,"Probability [0,1]",Scale parameter for virus transfer efficiency upon contact ,Wiebull,Julian et al. (2010)
-63,CONTACTsurfaceNF.handa,h-1,Lower limit for contact rate with surfaces in near field ,Triangle,CSO study
-64,CONTACTsurfaceNF.handb,h-1,Upper limit for contact rate with surfaces in near field ,Triangle,CSO study
-65,CONTACTsurfaceNF.handc,h-1,Mode for contact rate with surfaces in near field ,Triangle,CSO study
-66,CONTACTsurfaceFF.handa,h-1,Lower limit for contact rate with surfaces in far field ,Triangle,CSO study
-67,CONTACTsurfaceFF.handb,h-1,Upper limit for contact rate with surfaces in far field ,Triangle,CSO study
-68,CONTACTsurfaceFF.handc,h-1,Mode for contact rate with surfaces in far field ,Triangle,CSO study
-69,CONTACTface.handsize,Number,Size parameter for number of contacts with face/mask ,Negative Binomial,"(Phan et al., 2019)"
-70,CONTACTface.handmu,Number,Mu parameter for number of contacts with face/mask,Negative Binomial,"(Phan et al., 2019)"
-71,SuTARGETmin,"Probability [0,1]",Lower limit of proportion of particles that deposit on the facial mucous membranes which reach receptors in the respiratory tract ,Uniform,"(Jones, 2020)"
-72,SuTARGETmax,"Probability [0,1]",Upper limit of proportion of particles that deposit on the facial mucous membranes which reach receptors in the respiratory tract ,Uniform,"(Jones, 2020)"
-73,SuCeyeprob,"Probability [0,1]","Probability that virus reaches the susceptible person's eyes via droplet spray, based on control measure",-,"(Jones, 2020)"
-74,SuCSPRAYprobmin,"Probability [0,1]","Lower limit of probability that virus reaches the susceptible person's face via droplet spray, based on control measure",Triangle,"(Jones, 2020) and assumed"
-75,SuCSPRAYprobmax,"Probability [0,1]","Upper limit of probability that virus reaches the susceptible person's face via droplet spray, based on control measure",Triangle,"(Jones, 2020) and assumed"
-76,SuCSPRAYprobmode,"Probability [0,1]","Mode of probability that virus reaches the susceptible person's face via droplet spray, based on control measure",Triangle,"(Jones, 2020) and assumed"
-77,SuCinhaleprobmin,"Probability [0,1]","Lower limit of probability that virus reaches the susceptible person's lungs via inhalation, based on control measure",Triangle,"(Janssen, 2008; Gao et al., 2016; Cherrie et al., 2018; Steinle et a., 2018)"
-78,SuCinhaleprobmax,"Probability [0,1]","Upper limit of probability that virus reaches the susceptible person's lungs via inhalation, based on control measure",Triangle,"(Janssen, 2008; Gao et al., 2016; Cherrie et al., 2018; Steinle et a., 2018)"
-79,SuCinhaleprobmode,"Probability [0,1]","Mode of probability that virus reaches the susceptible person's lungs via inhalation, based on control measure",Triangle,"(Janssen, 2008; Gao et al., 2016; Cherrie et al., 2018; Steinle et a., 2018)"
-80,SuChandtouchmin,"Probability [0,1]","Lower limit of change in frequency of contact between hands and facial mucous membranes of worker, based on control measure",Triangle,"(Janssen, 2008; Gao et al., 2016; Cherrie et al., 2018; Steinle et a., 2018)"
-81,SuChandtouchmax,"Probability [0,1]","Upper limit of change in frequency of contact between hands and facial mucous membranes of worker, based on control measure",Triangle,"(Janssen, 2008; Gao et al., 2016; Cherrie et al., 2018; Steinle et a., 2018)"
-82,SuChandtouchmode,"Probability [0,1]","Mode of change in frequency of contact between hands and facial mucous membranes of worker, based on control measure",Triangle,"(Janssen, 2008; Gao et al., 2016; Cherrie et al., 2018; Steinle et a., 2018)"
-83,SuCfomiteprobmin,"Probability [0,1]","Lower limit of probability that virus reaches the susceptible person's face via contact with surfaces, based on control measure",Triangle,"(Kurgat et al., 2019)"
-84,SuCfomiteprobmax,"Probability [0,1]","Upper limit of probability that virus reaches the susceptible person's face via contact with surfaces, based on control measure",Triangle,"(Kurgat et al., 2019)"
-85,SuCfomiteprobmode,"Probability [0,1]","Mode of probability that virus reaches the susceptible person's face via contact with surfaces, based on control measure",Triangle,"(Kurgat et al., 2019)"
-86,SuSPRAYprob,"Probability [0,1]",Probability that the susceptible person intercepts a droplet spray event,-,"(Jones et al., 2020)"
-87,Su,Number,Number of susceptible people,-,-
+27,InfStageofInfection,"String [""Pre-peak"", ""Around peak"", ""Peak"", ""Post-peak""]",The stage of infection of the infected individual,Logistic and Cauchy,Protect Human Challenge Study
+28,Infcoughrateperhourmin,h-1,Lower limit of the the number of times the infected individual coughs per hour,Triangle,"(Sunger et al., 2013; Scheff et al., 2000)"
+29,Infcoughrateperhourmax,h-1,Upper limit of the the number of times the infected individual coughs per hour,Triangle,"(Sunger et al., 2013; Scheff et al., 2000)"
+30,Infcoughrateperhourmode,h-1,Mode of the the number of times the infected individual coughs per hour,Triangle,"(Sunger et al., 2013; Scheff et al., 2000)"
+31,InfCsprayprobmin,"Probability [0,1]",Lower limit of control placed on the infected person's droplet spray emission,Triangle,-
+32,InfCsprayprobmax,"Probability [0,1]",Upper limit of control placed on the infected person's droplet spray emission,Triangle,-
+33,InfCsprayprobmode,"Probability [0,1]",Mode of control placed on the infected person's droplet spray emission,Triangle,-
+34,InfCexhaleprobmin,"Probability [0,1]",Lower limit of control placed on the infected person's droplet spray emission,Triangle,-
+35,InfCexhaleprobmax,"Probability [0,1]",Upper limit of control placed on the infected person's droplet spray emission,Triangle,-
+36,InfCexhaleprobmode,"Probability [0,1]",Mode of control placed on the infected person's droplet spray emission,Triangle,-
+37,Infsurfaces,cm2,Area of surfaces in each zone,-,Assumed
+38,Infactivity,NA,Main behaviour of the infected person ,-,"Buonnano et al. (2020a, b) "
+39,Infsalivastudy,"String [""Chen"", ""Iwasaki""]",Name of study that the SARS-CoV-2 concentration in saliva is derived from,-,-
+40,InfsalivaChenshape,Log10 gene copies/ml,Shape parameter for SARS-CoV-2 concentration in saliva,Weibull,"(Chen et al., 2020)"
+41,InfsalivaChenscale,Log10 gene copies/ml,Scale parameter for SARS-CoV-2 concentration in saliva,Weibull,"(Chen et al., 2020)"
+42,InfsalivaIwasakimin,Log10 gene copies/ml,Lower limit of SARS-CoV-2 concentration in saliva,Uniform,"(Iwasaki et al., 2020)"
+43,InfsalivaIwasakimax,Log10 gene copies/ml,Upper limit of SARS-CoV-2 concentration in saliva,Uniform,"(Iwasaki et al., 2020)"
+44,InfEairTalkSmean,min-1,Virus emitted gene copies per minute with breathing/talking,Log Normal ,"(Leung et al., 2020, Zhou et al., 2021, Ma et al., 2020)"
+45,InfEairTalkSsd,min-1,Virus emitted gene copies per minute with breathing/talking,Log Normal ,"(Leung et al., 2020, Zhou et al., 2021, Ma et al., 2020)"
+46,Sufinger,cm2,Surface area of fingertips,-,Assumed
+47,Suface,cm2,Area of nose and mouth,-,Assumed
+48,Sueye,cm2,Area of eyes,-,Assumed
+49,SuFFtimemin,Percentage ,Percentage of time that the susceptible spent in the far field (minimum in 10% steps),-,CSO study
+50,SuFFtimemax,Percentage ,Percentage of time that the susceptible spent in the far field (maximum in 10% steps),-,CSO study
+51,SuTmaxa,Mins,Lower limit of time spent in the room,Triangle,"(Phan et al., 2019)"
+52,SuTmaxb,Mins,Upper limit of time spent in the room,Triangle,"(Phan et al., 2019)"
+53,SuTmaxc,Mins,Mode of time spent in the room,Triangle,"(Phan et al., 2019)"
+54,INACTIVaira,h-1,Lower limit of virus inactivation in air,Triangle,van Doremalen et al. (2020)
+55,INACTIVairb,h-1,Upper limit of virus inactivation in air,Triangle,van Doremalen et al. (2020)
+56,INACTIVairc,h-1,Mode of virus inactivation in air,Triangle,van Doremalen et al. (2020)
+57,INACTIVsurfacea,h-1,Lower limit of virus inactivation on surfaces ,Triangle,van Doremalen et al. (2020)
+58,INACTIVsurfaceb,h-1,Upper limit of virus inactivation on surfaces ,Triangle,van Doremalen et al. (2020)
+59,INACTIVsurfacec,h-1,Mode of virus inactivation on surfaces ,Triangle,van Doremalen et al. (2020)
+60,INACTIVskinmean,h-1,Mean of virus inactivation on skin ,Normal,van Doremalen et al. (2020)
+61,INACTIVskinsd,h-1,Standard deviation of virus inactivation on skin,Normal,van Doremalen et al. (2020)
+62,TRANSsurface.skinshape,"Probability [0,1]",Shape parameter for virus transfer efficiency upon contact ,Wiebull,Julian et al. (2010)
+63,TRANSsurface.skinscale,"Probability [0,1]",Scale parameter for virus transfer efficiency upon contact ,Wiebull,Julian et al. (2010)
+64,CONTACTsurfaceNF.handa,h-1,Lower limit for contact rate with surfaces in near field ,Triangle,CSO study
+65,CONTACTsurfaceNF.handb,h-1,Upper limit for contact rate with surfaces in near field ,Triangle,CSO study
+66,CONTACTsurfaceNF.handc,h-1,Mode for contact rate with surfaces in near field ,Triangle,CSO study
+67,CONTACTsurfaceFF.handa,h-1,Lower limit for contact rate with surfaces in far field ,Triangle,CSO study
+68,CONTACTsurfaceFF.handb,h-1,Upper limit for contact rate with surfaces in far field ,Triangle,CSO study
+69,CONTACTsurfaceFF.handc,h-1,Mode for contact rate with surfaces in far field ,Triangle,CSO study
+70,CONTACTface.handsize,Number,Size parameter for number of contacts with face/mask ,Negative Binomial,"(Phan et al., 2019)"
+71,CONTACTface.handmu,Number,Mu parameter for number of contacts with face/mask,Negative Binomial,"(Phan et al., 2019)"
+72,SuTARGETmin,"Probability [0,1]",Lower limit of proportion of particles that deposit on the facial mucous membranes which reach receptors in the respiratory tract ,Uniform,"(Jones, 2020)"
+73,SuTARGETmax,"Probability [0,1]",Upper limit of proportion of particles that deposit on the facial mucous membranes which reach receptors in the respiratory tract ,Uniform,"(Jones, 2020)"
+74,SuCeyeprob,"Probability [0,1]","Probability that virus reaches the susceptible person's eyes via droplet spray, based on control measure",-,"(Jones, 2020)"
+75,SuCSPRAYprobmin,"Probability [0,1]","Lower limit of probability that virus reaches the susceptible person's face via droplet spray, based on control measure",Triangle,"(Jones, 2020) and assumed"
+76,SuCSPRAYprobmax,"Probability [0,1]","Upper limit of probability that virus reaches the susceptible person's face via droplet spray, based on control measure",Triangle,"(Jones, 2020) and assumed"
+77,SuCSPRAYprobmode,"Probability [0,1]","Mode of probability that virus reaches the susceptible person's face via droplet spray, based on control measure",Triangle,"(Jones, 2020) and assumed"
+78,SuCinhaleprobmin,"Probability [0,1]","Lower limit of probability that virus reaches the susceptible person's lungs via inhalation, based on control measure",Triangle,"(Janssen, 2008; Gao et al., 2016; Cherrie et al., 2018; Steinle et a., 2018)"
+79,SuCinhaleprobmax,"Probability [0,1]","Upper limit of probability that virus reaches the susceptible person's lungs via inhalation, based on control measure",Triangle,"(Janssen, 2008; Gao et al., 2016; Cherrie et al., 2018; Steinle et a., 2018)"
+80,SuCinhaleprobmode,"Probability [0,1]","Mode of probability that virus reaches the susceptible person's lungs via inhalation, based on control measure",Triangle,"(Janssen, 2008; Gao et al., 2016; Cherrie et al., 2018; Steinle et a., 2018)"
+81,SuChandtouchmin,"Probability [0,1]","Lower limit of change in frequency of contact between hands and facial mucous membranes of worker, based on control measure",Triangle,"(Janssen, 2008; Gao et al., 2016; Cherrie et al., 2018; Steinle et a., 2018)"
+82,SuChandtouchmax,"Probability [0,1]","Upper limit of change in frequency of contact between hands and facial mucous membranes of worker, based on control measure",Triangle,"(Janssen, 2008; Gao et al., 2016; Cherrie et al., 2018; Steinle et a., 2018)"
+83,SuChandtouchmode,"Probability [0,1]","Mode of change in frequency of contact between hands and facial mucous membranes of worker, based on control measure",Triangle,"(Janssen, 2008; Gao et al., 2016; Cherrie et al., 2018; Steinle et a., 2018)"
+84,SuCfomiteprobmin,"Probability [0,1]","Lower limit of probability that virus reaches the susceptible person's face via contact with surfaces, based on control measure",Triangle,"(Kurgat et al., 2019)"
+85,SuCfomiteprobmax,"Probability [0,1]","Upper limit of probability that virus reaches the susceptible person's face via contact with surfaces, based on control measure",Triangle,"(Kurgat et al., 2019)"
+86,SuCfomiteprobmode,"Probability [0,1]","Mode of probability that virus reaches the susceptible person's face via contact with surfaces, based on control measure",Triangle,"(Kurgat et al., 2019)"
+87,SuSPRAYprob,"Probability [0,1]",Probability that the susceptible person intercepts a droplet spray event,-,"(Jones et al., 2020)"
+88,Su,Number,Number of susceptible people,-,-

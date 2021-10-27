@@ -31,8 +31,9 @@ Q5. Need to re-write information html
 Q6. Re-do scenario files so that they are more specific
 Q7. Always keep the same colours for the waffle plot
 Q8. Add in starting concentrations in air, surfaces etc
-Q9. Inormation - how to use tab - describe scenario files
+Q9. Information - how to use tab - describe scenario files
 Q12. Amend Infactivity metadata
-Q13. Change iterations to 200
-Q14. y axis not visible for the infected graph
-Q15. Always make the route colours the same... NF always red etc..
+Q16. Edit Vts description in metadata 
+Q17. Add in interesting files (high touch etc)
+Q18. Higher duration
+Q19. Have to update the metadata file if non-hospital scenario picked

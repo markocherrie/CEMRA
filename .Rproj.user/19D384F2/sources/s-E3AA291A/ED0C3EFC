@@ -1,0 +1,25 @@
+{
+    "id": "ED0C3EFC",
+    "path": "~/GitHub/CEMRA/R/run_model.R",
+    "project_path": "R/run_model.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1629279412042.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "tempName": "Untitled1",
+        "cursorPosition": "0,9",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1628869656,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1634570704884,
+    "read_only": false,
+    "read_only_alternatives": []
+}

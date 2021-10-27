@@ -6,7 +6,8 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts,
                                     RoomACHmin,RoomACHmax,Roomwindowsopen, 
                                     RoomUVCpurificationinroom,	RoomUVCmaxflowrate,	RoomUVCeffmin,	RoomUVCeffmax,
                                     Roomwindspeedmin,Roomwindspeedmax,RoomsoaW,RoomsoaH,RoomsoaP,
-                                    RoomNFw, RoomNFh, RoomNFd,Infected, Infcoughrateperhourmin,
+                                    RoomNFw, RoomNFh, RoomNFd,
+                                    InfStageofInfection, Infected, Infcoughrateperhourmin,
                                     Infcoughrateperhourmax,Infcoughrateperhourmode, InfCsprayprobmin, InfCsprayprobmax, InfCsprayprobmode,
                                     InfCexhaleprobmin,InfCexhaleprobmax,InfCexhaleprobmode,Infsurfaces, Infactivity, Infsalivastudy, InfsalivaChenshape, InfsalivaChenscale, InfsalivaIwasakimin, InfsalivaIwasakimax,
                                     InfEairTalkSmean,InfEairTalkSsd,Sufinger,Suface,Sueye,
@@ -75,6 +76,26 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts,
   
   ################### EMISSION VARIABLES ########################
    
+  # Stage of Infection
+  if(InfStageofInfection=="Pre-peak"){
+    InfStageofInfectionvalue<-rlogis(1, 0.62, 0.16)
+    InfStageofInfectionvalue<-ifelse(InfStageofInfectionvalue>1, 1,InfStageofInfectionvalue)
+    InfStageofInfectionvalue<-ifelse(InfStageofInfectionvalue<0, 0.62,InfStageofInfectionvalue)
+  } else if (InfStageofInfection=="Around peak"){
+    InfStageofInfectionvalue<-rcauchy(1, 0.92, 0.07)
+    InfStageofInfectionvalue<-ifelse(InfStageofInfectionvalue>1, 1,InfStageofInfectionvalue)
+    InfStageofInfectionvalue<-ifelse(InfStageofInfectionvalue<0, 0.92,InfStageofInfectionvalue)
+  } else if (InfStageofInfection=="Peak"){
+    InfStageofInfectionvalue<-1
+  } else if (InfStageofInfection=="Post-peak"){
+    InfStageofInfectionvalue<-rlogis(1, 0.67, 0.14)
+    InfStageofInfectionvalue<-ifelse(InfStageofInfectionvalue>1, 1,InfStageofInfectionvalue)
+    InfStageofInfectionvalue<-ifelse(InfStageofInfectionvalue<0, 0.67,InfStageofInfectionvalue)
+  } else{
+    InfStageofInfectionvalue<-1
+  }
+  
+  # Cough rate
   Infcoughrateperhour<-rtriangle(1, a=Infcoughrateperhourmin, b=Infcoughrateperhourmax, c=Infcoughrateperhourmode)
   
   # Number of people in FF that are infected
@@ -83,7 +104,7 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts,
   # COUGHrate is the rate of cough, unit is per minute, after dividing by 60
   # multiple by any controls on the coughs
    
-  COUGHrate<-(Infcoughrateperhour/60)*(rtriangle(a=InfCsprayprobmin,b=InfCsprayprobmax, c=InfCsprayprobmode))
+  COUGHrate<-(Infcoughrateperhour/60)*(rtriangle(a=InfCsprayprobmin,b=InfCsprayprobmax, c=InfCsprayprobmode))*InfStageofInfectionvalue
   
   # CONCsaliva is the concentration of SARS-CoV-2 (To et al., 2020)
   # unit is log10 infectious copies per mL
@@ -91,6 +112,7 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts,
   if(Infsalivastudy=="Chen"){
      
   CONCsaliva<-(10^rweibull(1, shape=InfsalivaChenshape, scale=InfsalivaChenscale))
+  CONCsaliva<-CONCsaliva*InfStageofInfectionvalue
   
   } else if(Infsalivastudy=="Iwasaki"){
      
@@ -139,10 +161,12 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts,
    
   InfEairTalkS<-rlnorm(1, meanlog=InfEairTalkSmean, sdlog=InfEairTalkSsd)
   InfEairTalkSQA<-InfEairTalkS*quantaexhalationrate
+  InfEairTalkSQA<-InfEairTalkS*InfStageofInfectionvalue
   
   # Apply the emission control (e.g. ventilated headboard)
    
   EairTalkS<-InfEairTalkSQA*rtriangle(n=1, a=InfCexhaleprobmin, b=InfCexhaleprobmax, c=InfCexhaleprobmode)
+  
   #Emission per minute from breathing/talking
   EairTalk<-EairTalkS
 

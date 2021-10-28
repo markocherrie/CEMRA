@@ -71,7 +71,7 @@ app_ui <- function(request) {
                       ), selected="ASISF"),
           selectInput("ENGVAR", "Engineering controls:",
                       list("None" = "None",
-                           "Fresh Air"="Freshair",
+                           "Fresh air from small window open 10%"="Freshair",
                            "NIOSH Ventilated headboard" = "VentHead",
                            "Sodeco Mobile Air Purification unit with UVC (UPH/EC-220-F7+F9-CG - 450m³/h)"="UVC"
                       )),

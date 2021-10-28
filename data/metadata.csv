@@ -3,7 +3,7 @@ ID,Parameter,Units,Description,Distribution,Reference
 2,dt,min,Time steps,-,-
 3,DRk,PFU,Dose Parameter of dose response function,-,"Watanabe T, Bartrand TA, Weir MH, Omura T, Haas CN.2010. Development of a dose-response model for SARScoronavirus. Risk Anal. 30(7):1129–1138. doi:10.1111/j.1539-6924.2010.01427.x"
 4,ExtraExpVolStudy,"String [""Duguid"", ""LoudenandRoberts"", ""Zhu""]",Name of study that estimated total expiratory droplet numbers produced during coughing and speaking using the measures size profile of 10mm,-,"(Chao et al., 2009)"
-5,Vts,m/s,Name of study that estimated total expiratory droplet numbers produced during coughing and speaking using the measures size profile of 10mm,-,"(Hinds, 1999)"
+5,Vts,m/s,Terminal settling velocity,-,"(Hinds, 1999)"
 6,distsalivavirusconc,"String [""equal"", ""lowernonresp""]",Distribution of virus concentration across the 16 size bins (for saliva concentration),-,"(Jones, 2020)"
 7,Roomheight,m,Room height,-,-
 8,RoomairflowNFFF,m/min,Random air speed between zones,-,"Baldwin P, Maynard A. 1988. A survey of wind speeds in indoor workplaces. Ann Occup Hyg. 42(5)L303-313. doi:10.1016/s0003-4878(98)0031-3"
@@ -20,7 +20,7 @@ ID,Parameter,Units,Description,Distribution,Reference
 19,Roomwindspeedmax,m/s,Upper limit of wind speed at the building height at a site sufficiently away from the building without any obstructions,Uniform,Assumed
 20,RoomsoaW,m,Width of smallest opening area ,-,Assumed
 21,RoomsoaH,m,Height of smallest opening area ,-,Assumed
-22,RoomsoaP,%,Percentage of window open,-,Assumed
+22,RoomsoaP,"Proportion [0,1]",Proportion of window open,-,Assumed
 23,RoomNFw,m,Near field zone width,-,Assumed
 24,RoomNFh,m,Near field zone height,-,Assumed
 25,RoomNFd,m,Near field zone depth,-,Assumed

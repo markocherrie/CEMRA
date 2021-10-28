@@ -25,15 +25,15 @@ CEMRA::run_model("Test", 10)
 ## Issues to fix
 Q1. Currently 1000 runs takes 94 seconds which is too slow for the app
 A1. Currently 1000 runs takes 33 seconds which is too slow for the app (update)
+Q3. Currently app takes longer than function (1 min 8 secs)
 
 Q4. Need to get IOM image working
 Q5. Need to re-write information html
-Q6. Re-do scenario files so that they are more specific
-Q7. Always keep the same colours for the waffle plot
+Q6. Re-do scenario files are high infection?
 Q8. Add in starting concentrations in air, surfaces etc
 Q9. Information - how to use tab - describe scenario files
 Q12. Amend Infactivity metadata
-Q16. Edit Vts description in metadata 
 Q17. Add in interesting files (high touch etc)
 Q18. Higher duration
 Q19. Have to update the metadata file if non-hospital scenario picked
+Q20. Make paramters file DT table

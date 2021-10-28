@@ -157,6 +157,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmin<-0
         df$Infcoughrateperhourmode<-30
         df$InfsalivaChenscale<-7.01
+        df$InfEairTalkSmean<-5
         df$ID<-paste0(df$ID, "\n+ Unknown infectious")
         df
       }else{
@@ -179,7 +180,7 @@ modeldata <- reactive({
       df$RoomsoaW<-0.8
       df$RoomsoaH<-1
       df$RoomsoaP<-0.1
-      df$ID<-paste0(df$ID, "\n+ Fresh air from open window")
+      df$ID<-paste0(df$ID, "\n+ Fresh air from small window open 10%")
       df
     } else if (input$ENGVAR=="VentHead"){
       df$InfCexhaleprobmin<-0.06
@@ -203,7 +204,7 @@ modeldata <- reactive({
       df$SuCfomiteprobmin<-0
       df$SuCfomiteprobmax<-0.47
       df$SuCfomiteprobmode<-0.146
-      df$ID<-paste0(df$ID, "\n+ SurfaceDisinfection and hand hygiene")
+      df$ID<-paste0(df$ID, "\n+ Surface Disinfection and hand hygiene")
       df
     }
   
@@ -212,18 +213,27 @@ modeldata <- reactive({
       df$SuCinhaleprobmin<-0.2
       df$SuCinhaleprobmax<-0.65
       df$SuCinhaleprobmode<-0.35
+      df$SuCSPRAYprobmin<-0.05
+      df$SuCSPRAYprobmax<-0.05
+      df$SuCSPRAYprobmode<-0.05
       df$ID<-paste0(df$ID, "\n+ Surgical Mask")
       df
     } else if(input$PPEVAR=="FFP2"){
       df$SuCinhaleprobmin<-0.01
       df$SuCinhaleprobmax<-0.35
       df$SuCinhaleprobmode<-0.1
+      df$SuCSPRAYprobmin<-0.05
+      df$SuCSPRAYprobmax<-0.05
+      df$SuCSPRAYprobmode<-0.05
       df$ID<-paste0(df$ID, "\n+ FFP2")
       df  
     } else if(input$PPEVAR=="FFP3"){
       df$SuCinhaleprobmin<-0.005
       df$SuCinhaleprobmax<-0.3
       df$SuCinhaleprobmode<-0.05
+      df$SuCSPRAYprobmin<-0.05
+      df$SuCSPRAYprobmax<-0.05
+      df$SuCSPRAYprobmode<-0.05
       df$ID<-paste0(df$ID, "\n+ FFP3")
       df  
     } else if(input$PPEVAR=="Airhood"){
@@ -233,6 +243,9 @@ modeldata <- reactive({
       df$SuChandtouchmin<-0	
       df$SuChandtouchmax<-0
       df$SuChandtouchmode<-0
+      df$SuCSPRAYprobmin<-0
+      df$SuCSPRAYprobmax<-0
+      df$SuCSPRAYprobmode<-0
       df$ID<-paste0(df$ID, "\n+ Airhood")
       df
     } else{

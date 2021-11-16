@@ -10,8 +10,7 @@
 app_ui <- function(request) {
   library(shinycssloaders)
   library(dplyr)
-  library(plotly)
-  
+
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
@@ -22,19 +21,15 @@ app_ui <- function(request) {
       headerPanel(
         fluidRow(
           column(11, h1("Covid Exposure Model and Risk App (CEMRA)", 
-                        style = "'font-weight': bold; 'font-size': 39px"))
-          #column(1, offset=-1, tags$img(src = "img/iomlogo.png"))
+                        style = "'font-weight': bold; 'font-size': 39px")),
+          column(1, offset=-2, img(height = 100, width = 100, src = "www/iomlogo.png"))
+
         )
         , windowTitle = "Covid Exposure Model and Risk App (CEMRA)"),
       
       
       sidebarLayout(
         sidebarPanel(
-          fileInput("file1", "Build your own - Setting File",
-                    accept = c(
-                      "text/csv",
-                      "text/comma-separated-values,text/plain",
-                      ".csv")),
           selectInput("SETTING", "Preloaded Setting:",
                       list("Hospital (Single Patient room)" = "Hospital_singlepatient",
                            "Hospital (Single Patient room) - high face touches"="Hospital_singlepatient_hightouch",
@@ -46,13 +41,18 @@ app_ui <- function(request) {
                            "Small Retailer"="Small Retailer",
                            "Communal toilet"="Communal toilet"
                       )),
+          fileInput("file1", "Build your own - Setting File",
+                    accept = c(
+                      "text/csv",
+                      "text/comma-separated-values,text/plain",
+                      ".csv")),
           #radioButtons("DURATION", "Duration in room:",
           #            list("Short Task (between 3 and 17 minutes)" = "shorttask",
           #                 "Long Task (between 25 and 35 minutes)" = "longtask"
           #               
           #            )),
           selectInput("INFECTED", "Infectiousness:",
-                      list("As specified in setting file"="ASISF",
+                      list("ASISF"="ASISF",
                            "Extremely high" = "EHI",
                            "Very high" = "VHI",
                            "High"="HI",
@@ -63,7 +63,7 @@ app_ui <- function(request) {
                            "Unknown"= "Unknown"
                       ), selected="ASISF"),
           selectInput("STAGEOFINFECTION", "Stage of Infection:",
-                      list("As specified in setting file"="ASISF",
+                      list("ASISF"="ASISF",
                         "Pre-peak"="Pre-peak",
                            "Peak" = "Peak",
                            "Around Peak" = "Around Peak",
@@ -90,24 +90,24 @@ app_ui <- function(request) {
           sliderInput("simu", "Number of simulations:",
                       min = 0, max = 1000,
                       value = 100, step = 100),
-          actionButton("button", "Model"),
+          actionButton("button", "Run"),
           downloadButton("downloadData", "Download parameters"),
+          
           
           
           
         ),
         mainPanel(
           tabsetPanel(
-            tabPanel("Model", includeHTML("data/docs/info.html")),
-            #tabPanel("Scenarios", includeHTML("data/docs/scenarios.html")),
+            tabPanel("Model & App", includeMarkdown(app_sys("app/www/info.Rmd"))),
+            tabPanel("Scenarios",  includeMarkdown(app_sys("app/www/preloadedscenarios.Rmd"))),
             #tabPanel("Viral load and shedding", includeHTML("data/docs/infectiousness.html")),
             #tabPanel("Controls", includeHTML("data/docs/controls.html")),
-            tabPanel("How to use", includeHTML("data/docs/howtouse.html")),
+            tabPanel("How to use", includeMarkdown(app_sys("app/www/howtouse.Rmd"))),
             tabPanel("Parameters", tableOutput("params")),
             tabPanel("Risk of Infection", plotOutput("numberinfectedgraph")%>% withSpinner(color="#428bca"), htmlOutput("infectedtextcomparison")),
             tabPanel("Route of transmission", plotOutput("relcon", width = "100%")%>% withSpinner(color="#428bca"), htmlOutput("infectedrelcontext")),
-            tabPanel("Acknowledgments", includeHTML("data/docs/acknowledgements.html"))
-            
+            tabPanel("Acknowledgments", includeMarkdown(app_sys("app/www/acknowledgements.Rmd")))
             )
         )
       )

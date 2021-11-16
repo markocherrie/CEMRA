@@ -26,7 +26,7 @@ filedata <- reactive({
       infile<-input$file1
       read.csv(infile$datapath)
     } else if(is.null(input$file1) & input$SETTING=="Hospital_singlepatient"){
-      infile<-"data/runs/Hospital_singlepatient.csv"
+      infile<-"data/runs/Hospital_singlepatient_moderate_peak.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Hospital_twopatient"){
       infile<-"data/runs/Hospital_twopatient.csv"
@@ -486,8 +486,6 @@ output$infectedrelcontext<- renderText({
          )
 
 })
-
-
 
 
   

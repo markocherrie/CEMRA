@@ -1,0 +1,20 @@
+---
+title: "scenarios"
+output: html_document
+---
+<br>
+
+##### Single patient hospital room
+
+
+
+
+![singleroom](singleroom.png)
+
+
+##### Multi patient hospital room
+
+
+
+
+![multiroom](multiroom.png)

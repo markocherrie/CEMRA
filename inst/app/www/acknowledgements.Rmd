@@ -3,6 +3,6 @@ title: "Acknowledgements"
 output: html_document
 ---
 <br>
-The research was sponsored by the Chief Scientist Office and HM Treasury via the PROTECT COVID-19 National Core Study on transmission and environment project.
+The research was sponsored by HM Treasury via the PROTECT COVID-19 National Core Study on transmission and environment project and the Chief Scientist Office.
 
 ![PROTECTandCSO](protectandcso3.png)

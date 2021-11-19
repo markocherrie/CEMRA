@@ -29,23 +29,23 @@ filedata <- reactive({
       infile<-"data/runs/Hospital_singlepatient_moderate_peak.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Hospital_twopatient"){
-      infile<-"data/runs/Hospital_twopatient.csv"
+      infile<-"data/runs/Hospital_twopatient_moderate_peak.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Hospital_singlepatienttreatment"){
-      infile<-"data/runs/Hospital_singlepatienttreatment.csv"
+      infile<-"data/runs/Hospital_singlepatienttreatment_moderate_peak.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Hospital_singlepatient_hightouch"){
-      infile<-"data/runs/Hospital_singlepatient_hightouch.csv"
+      infile<-"data/runs/Hospital_singlepatient_moderate_peak_hightouch.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Office"){
-      infile<-"data/runs/Office.csv"
+      infile<-"data/runs/Hospital_singlepatient_moderate_peak.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Restaurant"){
-      infile<-"data/runs/Restaurant.csv"
+      infile<-"data/runs/Hospital_singlepatient_moderate_peak.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Small Retailer"){
         # put in proper setting file
-        infile<-"data/runs/SmallRetailer.csv"
+        infile<-"data/runs/Hospital_singlepatient_moderate_peak.csv"
         read.csv(infile)
     }
   })
@@ -304,8 +304,8 @@ masteroutput <-eventReactive(input$button, {
 })
 
 #
-output$params <- renderTable({
-    paramdata()
+output$params <- renderDT({
+  datatable(paramdata(), options = list(pageLength = 10, lengthChange = FALSE), rownames= FALSE)
   })
 
 # Generate number of infected plot
@@ -364,10 +364,10 @@ output$infectedtextcomparison <- renderText({
   changetext[changeperc<0]<-"reduction"
   
   
-  paste("The median number of infected people for the scenario:",masteroutput$ID[1], ", is ",
-        "<font color=\"#FF0000\"><b>", scenariorisk , "per 100,000 exposure events","</b></font>",
-        "and for scenario:",masteroutput2$ID[2],", is ", 
-        "<font color=\"#FF0000\"><b>", scenario2risk , "per 100,000 exposure events","</b></font>")
+  paste0("The median number of infected people for the scenario: </br><ul><li>",masteroutput$ID[1], " is ",
+        "<font color=\"#FF0000\"><b>", scenariorisk,"</b></font>" , " per 100,000 exposure events","</li>",
+        "<li>",masteroutput2$ID[2]," is ", 
+        "<font color=\"#FF0000\"><b>", scenario2risk, "</b></font>", " per 100,000 exposure events","</li>")
 })
 
 # Generate relcon plot
@@ -472,17 +472,17 @@ output$infectedrelcontext<- renderText({
   scenario3<-with(masteroutput3, ID[which.max(risk)])
   
   
-  paste0("The dominant route in ", scenario2, " is ",
+  paste0("The dominant route for the scenario is:</br>","<ul><li>",
          "<font color=\"#FF0000\"><b>", domroute,"</b></font>", 
          " contributing ", 
          "<font color=\"#FF0000\"><b>",domperc,"%","</b></font>",
-         " to the total risk",
+         " to the total risk ","in ", scenario2 ,"</li>",
          
-         ". \nThe dominant route in ", scenario3, " is ",
+         "<li>",
          "<font color=\"#FF0000\"><b>", domroute2,"</b></font>",
          " contributing ", 
          "<font color=\"#FF0000\"><b>",domperc2,"%","</b></font>",
-         " to the total risk"
+         " to the total risk", " in ",scenario3, "</li>"
          )
 
 })

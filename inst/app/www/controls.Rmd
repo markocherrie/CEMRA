@@ -1,0 +1,8 @@
+---
+title: "controls"
+output: html_document
+---
+<br>
+
+<iframe src="https://thebest.shinyapps.io/COVID19_controls" width="100%" height="1000pt" style="border:1px solid black;">
+</iframe>

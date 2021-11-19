@@ -10,7 +10,8 @@
 app_ui <- function(request) {
   library(shinycssloaders)
   library(dplyr)
-
+  library(DT)
+  
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
@@ -52,7 +53,7 @@ app_ui <- function(request) {
           #               
           #            )),
           selectInput("INFECTED", "Infectiousness:",
-                      list("ASISF"="ASISF",
+                      list("As Specified in the Setting File"="ASISF",
                            "Extremely high" = "EHI",
                            "Very high" = "VHI",
                            "High"="HI",
@@ -63,7 +64,7 @@ app_ui <- function(request) {
                            "Unknown"= "Unknown"
                       ), selected="ASISF"),
           selectInput("STAGEOFINFECTION", "Stage of Infection:",
-                      list("ASISF"="ASISF",
+                      list("As Specified in the Setting File"="ASISF",
                         "Pre-peak"="Pre-peak",
                            "Peak" = "Peak",
                            "Around Peak" = "Around Peak",
@@ -102,9 +103,9 @@ app_ui <- function(request) {
             tabPanel("Model & App", includeMarkdown(app_sys("app/www/info.Rmd"))),
             tabPanel("Scenarios",  includeMarkdown(app_sys("app/www/preloadedscenarios.Rmd"))),
             #tabPanel("Viral load and shedding", includeHTML("data/docs/infectiousness.html")),
-            #tabPanel("Controls", includeHTML("data/docs/controls.html")),
+            #tabPanel("Controls", includeMarkdown(app_sys("app/www/controls.Rmd"))),
             tabPanel("How to use", includeMarkdown(app_sys("app/www/howtouse.Rmd"))),
-            tabPanel("Parameters", tableOutput("params")),
+            tabPanel("Parameters", DTOutput("params")),
             tabPanel("Risk of Infection", plotOutput("numberinfectedgraph")%>% withSpinner(color="#428bca"), htmlOutput("infectedtextcomparison")),
             tabPanel("Route of transmission", plotOutput("relcon", width = "100%")%>% withSpinner(color="#428bca"), htmlOutput("infectedrelcontext")),
             tabPanel("Acknowledgments", includeMarkdown(app_sys("app/www/acknowledgements.Rmd")))

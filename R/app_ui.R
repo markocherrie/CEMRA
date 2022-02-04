@@ -37,7 +37,7 @@ app_ui <- function(request) {
                            "Hospital (Two Patient room)"= "Hospital_twopatient",
                            "Hospital (Treatment room)" = "Hospital_singlepatienttreatment",
                            "Office (Open plan)" = "Office (Open plan)",
-                           "Office (Meeting room)"="Office (meeting room)",
+                           "Office (Meeting room)"="Office_MR_moderatepeak",
                            "Restaurant"="Restaurant",
                            "Small Retailer"="Small Retailer",
                            "Communal toilet"="Communal toilet"
@@ -90,7 +90,7 @@ app_ui <- function(request) {
                       )),
           sliderInput("simu", "Number of simulations:",
                       min = 0, max = 1000,
-                      value = 100, step = 100),
+                      value = 100, step = 10),
           actionButton("button", "Run"),
           downloadButton("downloadData", "Download parameters"),
           

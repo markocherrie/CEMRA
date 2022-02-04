@@ -20,6 +20,7 @@ devtools::load_all("R/")
   # hospital - single patient room
   # hospital - multi patient room
   # hospital - treatment room
+  # office - meeting room
   
 filedata <- reactive({
     if (!is.null(input$file1)) {
@@ -37,8 +38,8 @@ filedata <- reactive({
     } else if(is.null(input$file1) & input$SETTING=="Hospital_singlepatient_hightouch"){
       infile<-"data/runs/Hospital_singlepatient_moderate_peak_hightouch.csv"
       read.csv(infile)
-    } else if(is.null(input$file1) & input$SETTING=="Office"){
-      infile<-"data/runs/Hospital_singlepatient_moderate_peak.csv"
+    } else if(is.null(input$file1) & input$SETTING=="Office_MR_moderatepeak"){
+      infile<-"data/runs/Office_MR_moderatepeak.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Restaurant"){
       infile<-"data/runs/Hospital_singlepatient_moderate_peak.csv"

@@ -1,7 +1,7 @@
 library(compiler)
 library(triangle)
 COVIDinfectioncalculator<-cmpfun(
-COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts,
+COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts, gflow, gfhigh,
                                     distsalivavirusconc,Roomheight,RoomairflowNFFF,Roomvolumemin,Roomvolumemax,
                                     RoomACHmin,RoomACHmax,Roomwindowsopen, 
                                     RoomUVCpurificationinroom,	RoomUVCmaxflowrate,	RoomUVCeffmin,	RoomUVCeffmax,

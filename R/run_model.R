@@ -7,6 +7,9 @@ run_model<-function(ID, B){
     # Specify how many iterations
     RUN<-do.call("rbind", replicate(B, modeldata, simplify = FALSE))
     
+    # sort on id so that we get the correct temporal sequence
+    RUN<-RUN[order(RUN$ID),]
+    
     # Run the function
     output<-plyr::mdply(RUN, COVIDinfectioncalculator)
     

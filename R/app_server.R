@@ -42,7 +42,7 @@ filedata <- reactive({
       infile<-"data/runs/Office_MR_moderatepeak.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Restaurant"){
-      infile<-"data/runs/Hospital_singlepatient_moderate_peak.csv"
+      infile<-"data/runs/test.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Small Retailer"){
         # put in proper setting file
@@ -102,7 +102,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmin<-60
         df$Infcoughrateperhourmode<-65
         df$InfsalivaChenscale<-8
-        df$InfEairTalkSmean<-8
+        df$InfEairTalkSmean<-7.75
         df$ID<-paste0(df$ID, "\n+ Extremely high infectious")
         df
       } else if(input$INFECTED=="VHI"){
@@ -110,7 +110,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmin<-50
         df$Infcoughrateperhourmode<-55
         df$InfsalivaChenscale<-7
-        df$InfEairTalkSmean<-7
+        df$InfEairTalkSmean<-7.5
         df$ID<-paste0(df$ID, "\n+ Very high infectious")
         df
       } else if(input$INFECTED=="HI"){
@@ -118,7 +118,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmin<-40
         df$Infcoughrateperhourmode<-45
         df$InfsalivaChenscale<-6
-        df$InfEairTalkSmean<-6
+        df$InfEairTalkSmean<-7.25
         df$ID<-paste0(df$ID, "\n+ High infectious")
         df
       }else if(input$INFECTED=="MI"){
@@ -126,7 +126,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmin<-30
         df$Infcoughrateperhourmode<-35
         df$InfsalivaChenscale<-5
-        df$InfEairTalkSmean<-5
+        df$InfEairTalkSmean<-7
         df$ID<-paste0(df$ID, " ")
         df
       } else if(input$INFECTED=="LI"){
@@ -134,7 +134,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmin<-20
         df$Infcoughrateperhourmode<-25
         df$InfsalivaChenscale<-4
-        df$InfEairTalkSmean<-4
+        df$InfEairTalkSmean<-6.75
         df$ID<-paste0(df$ID, "\n+ Low infectious")
         df
       } else if(input$INFECTED=="VLI"){
@@ -142,7 +142,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmin<-10
         df$Infcoughrateperhourmode<-15
         df$InfsalivaChenscale<-3
-        df$InfEairTalkSmean<-3
+        df$InfEairTalkSmean<-6.5
         df$ID<-paste0(df$ID, "\n+ Very low infectious")
         df
       }else if(input$INFECTED=="ELI"){
@@ -150,7 +150,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmin<-1
         df$Infcoughrateperhourmode<-5
         df$InfsalivaChenscale<-2
-        df$InfEairTalkSmean<-2
+        df$InfEairTalkSmean<-6.25
         df$ID<-paste0(df$ID, "\n+ Extremely low infectious")
         df
       }else if(input$INFECTED=="Unknown"){
@@ -158,7 +158,7 @@ modeldata <- reactive({
         df$Infcoughrateperhourmin<-0
         df$Infcoughrateperhourmode<-30
         df$InfsalivaChenscale<-7.01
-        df$InfEairTalkSmean<-5
+        df$InfEairTalkSmean<-6
         df$ID<-paste0(df$ID, "\n+ Unknown infectious")
         df
       }else{

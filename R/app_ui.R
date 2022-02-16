@@ -17,6 +17,7 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic 
     fluidPage(
+      
       # App title ----
       #titlePanel("Covid Exposure Model and Risk App (CEMRA)"),
       headerPanel(
@@ -107,7 +108,7 @@ app_ui <- function(request) {
             tabPanel("How to use", includeMarkdown(app_sys("app/www/howtouse.Rmd"))),
             tabPanel("Parameters", DTOutput("params")),
             tabPanel("Risk of Infection", plotOutput("numberinfectedgraph")%>% withSpinner(color="#428bca"), htmlOutput("infectedtextcomparison")),
-            tabPanel("Route of transmission", plotOutput("relcon", width = "100%")%>% withSpinner(color="#428bca"), htmlOutput("infectedrelcontext")),
+            tabPanel("Route of transmission", plotOutput("relcon")%>% withSpinner(color="#428bca"), htmlOutput("infectedrelcontext")),
             tabPanel("Acknowledgments", includeMarkdown(app_sys("app/www/acknowledgements.Rmd")))
             )
         )

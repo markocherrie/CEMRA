@@ -1,5 +1,9 @@
 COVIDinfectioncalculatorBATCHrelativecontributions<-function(RUN, B){
   
+  # speed up?
+  #options(collapse_mask="manip")
+  #library(collapse)
+  
   
   # Specify how many iterations
   RUN<-do.call("rbind", replicate(B, RUN, simplify = FALSE))

@@ -1,19 +1,19 @@
 library(compiler)
 library(triangle)
 COVIDinfectioncalculator<-cmpfun(
-COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts, gflow, gfhigh,
-                                    distsalivavirusconc,Roomheight,RoomairflowNFFF,Roomvolumemin,Roomvolumemax,
+COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts, gflow, gfhigh,distsalivavirusconc,SpeakontoSurf=NA,
+                                    Roomheight,RoomairflowNFFF,Roomvolumemin,Roomvolumemax,
                                     RoomACHmin,RoomACHmax,Roomwindowsopen, 
-                                    RoomUVCpurificationinroom,	RoomUVCmaxflowrate,	RoomUVCeffmin,	RoomUVCeffmax,
+                                    RoomUVCpurificationinroom,RoomUVCmaxflowrate,	RoomUVCeffmin,	RoomUVCeffmax,
                                     Roomwindspeedmin,Roomwindspeedmax,RoomsoaW,RoomsoaH,RoomsoaP,
                                     RoomNFw, RoomNFh, RoomNFd,
-                                    InfStageofInfection, Infected, Infcoughrateperhourmin,
+                                    InfStageofInfection, Infected, Infcoughrateperhourmin, Infnonsilenttime,
                                     Infcoughrateperhourmax,Infcoughrateperhourmode, InfCsprayprobmin, InfCsprayprobmax, InfCsprayprobmode,
-                                    InfCexhaleprobmin,InfCexhaleprobmax,InfCexhaleprobmode,Infsurfaces, Infactivity, Infsalivastudy, InfsalivaChenshape, InfsalivaChenscale, InfsalivaIwasakimin, InfsalivaIwasakimax,
+                                    InfCexhaleprobmin,InfCexhaleprobmax,InfCexhaleprobmode,InfsurfacesNF, InfsurfacesFF, Infactivity, Infsalivastudy, InfsalivaChenshape, InfsalivaChenscale, InfsalivaIwasakimin, InfsalivaIwasakimax,
                                     InfEairTalkSmean,InfEairTalkSsd,Sufinger,Suface,Sueye,
                                     SuFFtimemin,SuFFtimemax,SuTmaxa,SuTmaxb,SuTmaxc,
                                     INACTIVaira,INACTIVairb,INACTIVairc,INACTIVsurfacea,INACTIVsurfaceb,
-                                    INACTIVsurfacec,INACTIVskinmean,INACTIVskinsd,TRANSsurface.skinshape,TRANSsurface.skinscale,
+                                    INACTIVsurfacec,INACTIVskinmean,INACTIVskinsd,TRANSsurface.skinshape,TRANSsurface.skinscale,TRANSskin.abs=NA,
                                     CONTACTsurfaceNF.handa,CONTACTsurfaceNF.handb,CONTACTsurfaceNF.handc,CONTACTsurfaceFF.handa,CONTACTsurfaceFF.handb,
                                     CONTACTsurfaceFF.handc, CONTACTface.handsize,CONTACTface.handmu,SuTARGETmin,SuTARGETmax,
                                     SuCeyeprob,SuCSPRAYprobmin, SuCSPRAYprobmax,SuCSPRAYprobmode,SuCinhaleprobmin,
@@ -124,7 +124,7 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts, gflow, gfhig
   
   # adjust gene copies (unit of emission) to PFU (unit of dose-response)
    
-  gf<-runif(1, 500, 1000)	
+  gf<-runif(1, gflow, gfhigh)	
   
   # Apply behaviour modification factor
   #	See Buonnano et al. (2020a, b); assume the patient is resting-speaking
@@ -188,7 +188,6 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts, gflow, gfhig
   # ensure the the normal distribution always returns a positive value
   while (length(INACTIVskin[INACTIVskin<=0])>=1){
     n<-length(INACTIVskin[INACTIVskin<=0])
-     
     INACTIVskin[INACTIVskin<=0]<-rnorm(n,mean=INACTIVskinmean, sd=INACTIVskinsd)/60
   }
   
@@ -210,7 +209,11 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts, gflow, gfhig
   
   # TRANSskin is the effectiveness of transfer between two skin surfaces
   # unit is proprotion (0-1)
+  if(is.na(TRANSskin.abs)){
   TRANSskin<-TRANSsurface.skin
+  }else{
+  TRANSskin<-TRANSskin.abs 
+  }
   
   # CONTACTsurfaceNF.hand is the frequency of contact between hands and surfaces in the near-field 
   # from Phan et al. (2019), 
@@ -235,6 +238,43 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts, gflow, gfhig
   pTARGET<-runif(1,min=SuTARGETmin, max=SuTARGETmax)
   
   ################### SIZE AND COUNT DISTRIBUTION OF PARTICLES, BASED ON CHAO (2009) VARIABLES ########################
+  
+  ChaoSpeak<-matrix(0, nrow=16, ncol=7)
+  #column 1 is the lower end of the size range at 10 mm, Table 1
+  # column 2 is the upper end of the size range at 10 mm, Table 1
+  # column 3 is the average number of particles per person at 10 mm (50 coughs), Table 1
+  # column 4 is the standard deviation of the particles per person at 10 mm (50 coughs), Table
+  # column 5 is the mean particle volume in the size range
+  # column 6 is the coefficient of variation
+  # column 7 is the estimated number based on Duguid (Table 4)
+  ChaoSpeak[1,1:4]<-c(2,4,  1.7, 1.62)
+  ChaoSpeak[2,1:4]<-c(4,8,  26.8, 8.94)
+  ChaoSpeak[3,1:4]<-c(8,16, 9.2, 4.67)
+  ChaoSpeak[4,1:4]<-c(16,24, 4.8, 4.07)
+  ChaoSpeak[5,1:4]<-c(24,32, 3.2, 2.36)
+  ChaoSpeak[6,1:4]<-c(32,40, 1.6, 1.03)
+  ChaoSpeak[7,1:4]<-c(40,50, 1.7, 0.90)
+  ChaoSpeak[8,1:4]<-c(50,75, 1.8, 0.98)
+  ChaoSpeak[9,1:4]<-c(75,100, 1.3, 0.65)
+  ChaoSpeak[10,1:4]<-c(100,125, 1.7, 1.01)
+  ChaoSpeak[11,1:4]<-c(125,150, 1.6, 1.03)
+  ChaoSpeak[12,1:4]<-c(150,200, 1.7, 1.01)
+  ChaoSpeak[13,1:4]<-c(200, 250, 1.5, 0.82)
+  ChaoSpeak[14,1:4]<-c(250,500, 1.4, 0.50)
+  ChaoSpeak[15,1:4]<-c(500,1000, 0.5, 0.82)
+  ChaoSpeak[16,1:4]<-c(1000,2000, 0, 0)
+  ChaoSpeak[,5]<-((4/3)*pi*(ChaoSpeak[,2]/2)^3+(4/3)*pi*(ChaoSpeak[,1]/2)^3)/2
+  ChaoSpeak[1:15,6]<-ChaoSpeak[1:15,4]/ChaoSpeak[1:15,3]
+  if(ExtraExpVolStudy=="Duguid"){
+    ChaoSpeak[,7]<-c(3, 50, 17, 9, 6, 3, 3, 3, 2,3,3,3,3,3,1,0)
+  } else if (ExtraExpVolStudy=="LoudenandRoberts"){
+    ChaoSpeak[,7]<-c(191,2972,1018,534,353,181,191,201,141,191,181,191,161,151,60,0)
+   }else if(ExtraExpVolStudy=="Zhu"){
+    ChaoSpeak[,7]<-c(3, 50, 17, 9, 6, 3, 3, 3, 2,3,3,3,3,3,1,0)
+  # N/a so using Duguid 
+  }
+  
+#################
   
   ChaoCough<-matrix(0, nrow=16, ncol=7)
   #column 1 is the lower end of the size range at 10 mm, Table 1
@@ -341,13 +381,13 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts, gflow, gfhig
   ## Transfer rates with efficiency 
   # exchange between near-field surface and hand, include area ratio 
   # hand is smaller than surface 
-  lambda24<-(Sufinger/Infsurfaces)*TRANSsurface.skin*CONTACTsurfaceNF.hand
+  lambda24<-(Sufinger/InfsurfacesNF)*TRANSsurface.skin*CONTACTsurfaceNF.hand
   # exchange between hand and near-field surface 
   lambda42<-TRANSsurface.skin*CONTACTsurfaceNF.hand
   # exchange between one finger (divide Sufinger by five) and facial mucous membranes 
   lambda45<-(Sufinger/Aportals)*CONTACTface.hand*TRANSskin
   # exchange between far-field surface and hand
-  lambda34<-(Sufinger/Infsurfaces)*TRANSsurface.skin*CONTACTsurfaceFF.hand	
+  lambda34<-(Sufinger/InfsurfacesFF)*TRANSsurface.skin*CONTACTsurfaceFF.hand	
   # exchange between hand and far-field surface
   lambda43<-TRANSsurface.skin*CONTACTsurfaceFF.hand
   
@@ -362,9 +402,9 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts, gflow, gfhig
   ## Virus deposition from air onto surfaces 
   # m/s, Roomheight = 3 m
   # deposition from air in near-field to touched surfaces in the near-field
-  lambda12<-(Vts/Roomheight*60)*(Infsurfaces/(0.5*W*W*100*100))
+  lambda12<-(Vts/Roomheight*60)*(InfsurfacesNF/(0.5*W*W*100*100))
   # deposition fom air in far-field to touched surfaces in the far-field
-  lambda93<-(Vts/Roomheight*60)*(Infsurfaces/(0.5*W*W*100*100))
+  lambda93<-(Vts/Roomheight*60)*(InfsurfacesFF/(0.5*W*W*100*100))
   
   ## Virus resuspension from surfaces to air
   lambda21<-0   
@@ -490,15 +530,48 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts, gflow, gfhig
     EsurfCough<-0
   }
   
+  # Pathogens in BREATHING particles (onto surfaces)
+  
+  # number of pathogens in particle bin
+  n.paths.speak.particle<-matrix(0, nrow=16, ncol=round(Tmax/8))
+  # number of particles
+  n.speak.particle<-matrix(0, nrow=16, ncol=round(Tmax/8))
+  # 8 below is 8 minutes, to count to 1-100 10 times.
+  for (n in 1:round(Tmax/8)){
+    for (i in 1:16){
+      #sample the number of particles in each particle size bin 
+      n.speak.particle[i,n]<-rpois(1,ChaoSpeak[i,7])
+      
+      
+      #number of pathogens is the particle size bin is number particles x 
+      #                                             volume of particles x 
+      #                                             volume unit correction (um^3 to cm^3) x 
+      #                                             concentration in saliva x 
+      #                                             concentration adjustment
+      n.paths.speak.particle[i,n]<-n.speak.particle[i,n]*ChaoSpeak[i,5]*(10^(-12))*CONCsaliva*Dist.saliva[i]	
+    }
+  }
+  # speaking emission rate to air and surfaces (pathogens/minute)
+  EsurfSpeak<-(sum(sum(n.paths.speak.particle[4:16,]))/(Tmax*Infnonsilenttime)*quantaexhalationrate)
+  
+  
   # Pathogens in BREATHING/TALKING particles
 
   #continuous emission into air and surfaces in near field (PFU per min)
   rateEair<-(EairCough+EairTalk)/gf
+  if(SpeakontoSurf=="Y"){
+  rateEsurface<-(EsurfCough+EsurfSpeak)/gf
+  } else{
   rateEsurface<-(EsurfCough)/gf
+  }
   
   #continuous emission into air and surfaces in far field (PFU per min)
   rateEair2<-((EairCough+EairTalk)*FFinfected)/gf
+  if(SpeakontoSurf=="Y"){
+  rateEsurface2<-((EsurfCough+EsurfSpeak)*FFinfected)/gf
+  } else{
   rateEsurface2<-((EsurfCough)*FFinfected)/gf
+  }
   
   #############################################################################################################################################
   # STAGE 5: INITIAL COMPARTMENT CONDITIONS - equated with steady state

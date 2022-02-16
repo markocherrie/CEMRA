@@ -37,3 +37,5 @@ Q17. Add in interesting files (high touch etc)
 Q18. Higher duration
 Q19. Have to update the metadata file if non-hospital scenario picked
 Q20. Make paramters file DT table
+Q21. Need to change the text information for route and infected tab when there are multiple groups - speaking/listening etc..
+Q22. Need to change runs so that InfsurfacesNF and InsurfacesFF are in

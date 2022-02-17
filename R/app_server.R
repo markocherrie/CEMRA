@@ -27,27 +27,17 @@ filedata <- reactive({
       infile<-input$file1
       read.csv(infile$datapath)
     } else if(is.null(input$file1) & input$SETTING=="Hospital_singlepatient"){
-      infile<-"data/runs/Hospital_singlepatient_moderate_peak.csv"
+      infile<-"data/runs/Hospital/Hospital_singlepatient_moderate_peak.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Hospital_twopatient"){
-      infile<-"data/runs/Hospital_twopatient_moderate_peak.csv"
+      infile<-"data/runs/Hospital/Hospital_twopatient_moderate_peak.csv"
       read.csv(infile)
     } else if(is.null(input$file1) & input$SETTING=="Hospital_singlepatienttreatment"){
-      infile<-"data/runs/Hospital_singlepatienttreatment_moderate_peak.csv"
+      infile<-"data/runs/Hospital/Hospital_singlepatienttreatment_moderate_peak.csv"
       read.csv(infile)
-    } else if(is.null(input$file1) & input$SETTING=="Hospital_singlepatient_hightouch"){
-      infile<-"data/runs/Hospital_singlepatient_moderate_peak_hightouch.csv"
+    } else if(is.null(input$file1) & input$SETTING=="Office_meetings"){
+      infile<-"data/runs/Office/Office_meetings2.csv"
       read.csv(infile)
-    } else if(is.null(input$file1) & input$SETTING=="Office_MR_moderatepeak"){
-      infile<-"data/runs/Office_MR_moderatepeak.csv"
-      read.csv(infile)
-    } else if(is.null(input$file1) & input$SETTING=="Restaurant"){
-      infile<-"data/runs/test.csv"
-      read.csv(infile)
-    } else if(is.null(input$file1) & input$SETTING=="Small Retailer"){
-        # put in proper setting file
-        infile<-"data/runs/Hospital_singlepatient_moderate_peak.csv"
-        read.csv(infile)
     }
   })
   

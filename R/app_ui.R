@@ -34,14 +34,9 @@ app_ui <- function(request) {
         sidebarPanel(
           selectInput("SETTING", "Preloaded Setting:",
                       list("Hospital (Single Patient room)" = "Hospital_singlepatient",
-                           "Hospital (Single Patient room) - high face touches"="Hospital_singlepatient_hightouch",
                            "Hospital (Two Patient room)"= "Hospital_twopatient",
                            "Hospital (Treatment room)" = "Hospital_singlepatienttreatment",
-                           "Office (Open plan)" = "Office (Open plan)",
-                           "Office (Meeting room)"="Office_MR_moderatepeak",
-                           "Restaurant"="Restaurant",
-                           "Small Retailer"="Small Retailer",
-                           "Communal toilet"="Communal toilet"
+                           "Office (Meeting room)"="Office_meetings"
                       )),
           fileInput("file1", "Build your own - Setting File",
                     accept = c(
@@ -90,8 +85,8 @@ app_ui <- function(request) {
                            "Worksafe AirHood"="Airhood"
                       )),
           sliderInput("simu", "Number of simulations:",
-                      min = 0, max = 1000,
-                      value = 100, step = 10),
+                      min = 0, max = 250,
+                      value = 50, step = 1),
           actionButton("button", "Run"),
           downloadButton("downloadData", "Download parameters"),
           
@@ -102,7 +97,7 @@ app_ui <- function(request) {
         mainPanel(
           tabsetPanel(
             tabPanel("Model & App", includeMarkdown(app_sys("app/www/info.Rmd"))),
-            tabPanel("Scenarios",  includeMarkdown(app_sys("app/www/preloadedscenarios.Rmd"))),
+            tabPanel("Preloaded Setting",  includeMarkdown(app_sys("app/www/preloadedscenarios.Rmd"))),
             #tabPanel("Viral load and shedding", includeHTML("data/docs/infectiousness.html")),
             #tabPanel("Controls", includeMarkdown(app_sys("app/www/controls.Rmd"))),
             tabPanel("How to use", includeMarkdown(app_sys("app/www/howtouse.Rmd"))),

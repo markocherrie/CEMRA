@@ -73,6 +73,7 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts, gflow, gfhig
   #library(triangle)
    
   Tmax<-rtriangle(1, a=SuTmaxa, b=SuTmaxb, c=SuTmaxc)
+
   
   ################### EMISSION VARIABLES ########################
    
@@ -531,13 +532,14 @@ COVIDinfectioncalculator<- function(ID,dt,DRk,ExtraExpVolStudy,Vts, gflow, gfhig
   }
   
   # Pathogens in BREATHING particles (onto surfaces)
-  
-  # number of pathogens in particle bin
-  n.paths.speak.particle<-matrix(0, nrow=16, ncol=round(Tmax/8))
-  # number of particles
-  n.speak.particle<-matrix(0, nrow=16, ncol=round(Tmax/8))
   # 8 below is 8 minutes, to count to 1-100 10 times.
-  for (n in 1:round(Tmax/8)){
+  nn<-round(Tmax)
+  # number of pathogens in particle bin
+  n.paths.speak.particle<-matrix(0, nrow=16, ncol=nn)
+  # number of particles
+  n.speak.particle<-matrix(0, nrow=16, ncol=nn)
+  
+  for (n in 1:nn){
     for (i in 1:16){
       #sample the number of particles in each particle size bin 
       n.speak.particle[i,n]<-rpois(1,ChaoSpeak[i,7])

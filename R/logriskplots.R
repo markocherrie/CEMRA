@@ -1,7 +1,9 @@
+donotruninapp<-function(){
 library(ggplot2)
 library(tidyr)
 library(dplyr)
-
+library(ggpubr)
+  
 output<-read.csv("data/output/Hospital/Hospital_Paper_Main.csv")
 
 numberinfectedgraph<-function(output, infectiousness, type){
@@ -192,7 +194,7 @@ ghijklm %>%
 
 
 ggarrange(h,i,j, ncol = 2, nrow=2, labels = c("A","B", "C")  )
-
+}
 
 ####################
 

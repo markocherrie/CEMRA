@@ -18,7 +18,7 @@ output: html_document
 
 * Deposition, decay and ventilation affect the amount of virus in the air, surfaces and the skin. .We assume that the dominant touch surface is plastic and there is a stable temperature, relative humidity and UV (i.e. environmental conditions don't affect decay rate). 
 
-* Susceptible parameters include area of finger, face, eye, and area and volume of face cone, time spent in the room, time spent in the far field and touches to surfaces and face. 
+* Susceptible parameters include area of finger, face, eye and volume of face cone, time spent in the room, time spent in the far field and touches to surfaces and face. 
 
 * Infectiousness has been defined by the viral load in saliva, viral emission during breathing and coughing parameters in the model. We have developed a simple “Infected Status” in the app from extremely low to extremely high, where we have assumed that all three parameters increase linearly along this scale (within the distributions that have been published in the literature). There is an assumption that the infected person is breathing or speaking. Moderate infectiousness is assumed in CEMRA unless otherwise stated given that this had similar predicted concentrations to what was measured in hospitals.
 

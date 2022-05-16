@@ -21,7 +21,10 @@ CEMRA::run_model("Test", 10)
 3. Load the metadata.csv and modify and save as an RData file
 
 ## Issues to fix
-Q1. Add in starting concentrations in air, surfaces etc?
-Q2. Set duration via side bar?
-Q3. Have to update the metadata file if non-hospital scenario picked
-Q4. Check input settings are same as new version of app
+I1. Add in starting concentrations in air, surfaces etc?
+I2. Set duration via side bar?
+I3. Have to update the metadata file if non-hospital scenario picked
+I4. Create script that checks input columns match those required as input for new version of app
+I5. Update preloaded scenarios with narrative rather than data heavy...
+I6. Add IOM favicon
+

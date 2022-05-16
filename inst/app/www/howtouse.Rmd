@@ -8,7 +8,7 @@ The steps for using CEMRA are split into four sections: setup, interpretation, t
 
 ##### **Step 1: Setup**
 
-![setup](setup2.PNG)
+![setup](setup2.png)
 
 
 ##### **Step 2: Interpretation**
@@ -18,7 +18,7 @@ The steps for using CEMRA are split into four sections: setup, interpretation, t
 
 ##### **Step 3: Tuning** 
 
-![interp](tuning2.PNG)
+![interp](tuning2.png)
 
 ##### **Step 4: Reportable results**
 

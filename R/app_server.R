@@ -314,7 +314,8 @@ output$numberinfectedgraph <- renderPlot({
         axis.title.x=element_blank(),
         axis.text.x = element_blank(), 
         axis.ticks = element_blank())+
-      theme(text = element_text(size=12))
+      theme(text = element_text(size=12),
+            strip.text = element_text(size=15))
     d<-d + scale_y_continuous(trans='log10')+
       ylab("Log risk per single exposure event")
     d
@@ -424,7 +425,7 @@ output$relcon <- renderPlot({
       color = "white", size = 0.33
     ) +
     facet_wrap(~ID) +
-    theme(strip.text.x = element_text(hjust = 0.5))
+    theme(strip.text.x = element_text(hjust = 0.5, size=15))
   
 })
 

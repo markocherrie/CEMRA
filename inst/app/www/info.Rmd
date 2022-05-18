@@ -10,7 +10,7 @@ output: html_document
 
 * CEMRA uses a compartmental model of nine states (with 4 absorbing - i.e. virus cannot leave these states once it has been transported there) within a room to estimate virus transport and fate for contact and inhalation transmission, implemented using a discrete-time Markov chain. A transition matrix is created which represents the probability of the virus moving from one state to another. At each time step (0.001 minutes) the virus concentrations are updated; the transport of virus is ‘Memoryless’ - each change only depends only on the concentration in the time step before. Initial conditions are equated with steady state in a well mixed room. 
 
-* The room is split up into a near-field (1 metres surrounding the infectious individual) and far field zones. In these areas the virus can be in the air and on surfaces.  
+* The room is split up into a near-field (1 metre surrounding the infectious individual) and far field zones. In these areas the virus can be in the air and on surfaces.  
 
 * Droplet transmission from coughing is based on respiratory droplet size distribution, extrapolated to the expiratory volume, with a probability of impacting the face in proportion to the surface area of the mucous membranes.
 
@@ -26,7 +26,7 @@ output: html_document
 
 * Engineering, administrative and Personal Protective equipment controls can be applied, with estimates of efficacy derived from the literature. 
 
-* An overview of the model is presented in Figure 1. A more detailed version is available [here](https://iomworld.box.com/s/f0ubyg6uilc08qdpgw1hk4bddhg83dc7).
+* An overview of the model is presented in Figure 1. A more detailed version is available [here](https://iomworld.box.com/s/lyv3k4u1k7q97yjrfhxabj73hmmjgelx).
 
 
 *Figure 1: Simplified overview of the model*

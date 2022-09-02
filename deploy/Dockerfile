@@ -1,4 +1,4 @@
-FROM CEMRA_base
+FROM cemra_base
 COPY renv.lock.prod renv.lock
 RUN R -e 'renv::restore()'
 COPY CEMRA_*.tar.gz /app.tar.gz

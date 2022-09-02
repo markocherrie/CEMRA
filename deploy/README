@@ -1,4 +1,4 @@
-docker build -f Dockerfile_base --progress=plain -t CEMRA_base .
-docker build -f Dockerfile --progress=plain -t CEMRA:latest .
-docker run -p 80:80 CEMRA:latest
+docker build -f Dockerfile_base --progress=plain -t cemra_base .
+docker build -f Dockerfile --progress=plain -t cemra:latest .
+docker run -p 80:80 cemra:latest
 # then go to 127.0.0.1:80
